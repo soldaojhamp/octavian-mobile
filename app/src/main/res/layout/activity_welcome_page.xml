@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:id="@+id/main"
+    tools:context=".WelcomePageActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_extrabold"
+        android:text="Change Your\nPerspective In Style"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:paddingTop="40dp"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:text="Change The Quality Of Your Appearance With Octovian Now!"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:padding="25dp"
+        android:paddingTop="10dp"
+        />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="450dp"
+        android:src="@drawable/thrift_shop_amico"
+        android:adjustViewBounds="true"
+        android:paddingTop="20dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:background="@color/red"
+        android:text="Continue"
+        android:textColor="@color/white"
+        android:layout_marginTop="30dp"
+        android:padding="10dp" />
+</LinearLayout>
