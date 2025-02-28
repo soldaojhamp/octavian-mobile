@@ -2,9 +2,94 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ForgotSecActivity">
+    android:background="@color/white"
+    tools:context=".ForgotPassActivity">
+
+    <!-- Image Header -->
+
+    <!-- Popup LinearLayout -->
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logowhitebg___copy" />
+
+    <LinearLayout
+        android:id="@+id/popupContainer"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@drawable/forgotbg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9">
+
+        <ImageView
+            android:id="@+id/imageView13"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:tint="@color/red"
+            app:srcCompat="@drawable/back" />
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/forgotpassimg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:text="Account Recovery"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Enter your e-mail address below to reset your password"
+            android:textAlignment="center"
+            android:textColor="#A8A8A8"
+            android:textSize="14sp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/forgotinput"
+            android:hint="Johndoe@gmail.com"
+            android:padding="12dp"
+            android:textColorHint="#80B2B2B2" />
+
+        <Button
+            android:id="@+id/bsubmitForgotpass"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/corners"
+            android:fontFamily="@font/poppins"
+            android:text="Submit"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <!-- Login Button -->
+
+    <!-- Sign Up Section -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

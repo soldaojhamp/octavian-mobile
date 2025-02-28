@@ -28,69 +28,81 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/black"
-        android:padding="20dp"
-        android:orientation="vertical">
+        android:background="@drawable/logincurve"
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <!-- Email -->
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Login"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins"
             android:text="Email"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/editTextTextEmailAddress"
             android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:background="@color/white"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/input"
+            android:hint="JohnDoe@Gmail.com"
             android:inputType="textEmailAddress"
-            android:hint="Enter your email"
-            android:textSize="16sp"
-            android:layout_marginTop="8dp" />
+            android:padding="10dp"
+            android:textSize="16sp" />
 
         <!-- Password -->
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins"
             android:text="Password"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/editTextTextPassword"
             android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:background="@color/white"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/input"
+            android:hint="********"
             android:inputType="textPassword"
-            android:hint="Enter your password"
-            android:textSize="16sp"
-            android:layout_marginTop="8dp" />
+            android:padding="10dp"
+            android:textSize="16sp" />
 
         <!-- Remember Me & Forgot Password -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/CB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="85dp"
                 android:buttonTint="@color/white"
                 android:fontFamily="@font/poppins"
-                android:textSize="16sp"
                 android:text="Remember Me"
                 android:textColor="@color/white"
-                android:layout_marginEnd="85dp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -105,19 +117,21 @@
         <Button
             android:id="@+id/button3"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/corners"
+            android:fontFamily="@font/poppins"
             android:text="Log In"
-            android:backgroundTint="@color/red"
             android:textColor="@color/white"
-            android:layout_marginTop="20dp" />
+            tools:textSize="18sp" />
 
         <!-- Don't Have an Account? & Sign Up -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
             android:gravity="center"
-            android:layout_marginTop="20dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView9"
@@ -132,6 +146,7 @@
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
                 android:text=" Sign Up"
                 android:textColor="@color/red"
                 android:textSize="14sp" />

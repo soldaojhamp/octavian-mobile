@@ -11,47 +11,492 @@
     <!-- Top Section -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="0dp"
         android:background="@color/white"
-        android:orientation="vertical"
-        android:padding="5dp"
-        android:layout_marginTop="0dp">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <!-- Welcome + Image sa Left -->
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <!-- Welcome + Jhamp (Stacked) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Welcome"
-                android:textSize="14sp" />
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/poppins"
+                android:gravity="center"
+                android:text="Welcome,"
+                android:textColor="#212121"
+                android:textSize="18dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:text="User"
+                android:textColor="@color/red"
+                android:textSize="26sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView11" />
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="15dp"
                 android:src="@drawable/logowhitebg___copy"
-                android:layout_marginLeft="250dp"/><!-- Space between Image and Welcome -->
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- Logo sa Kanan -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="380dp"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="15dp">
+
+        <!-- Search Icon -->
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/search_1"
+            android:layout_marginRight="8dp"/>
+
+        <!-- Search Input -->
+        <EditText
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:hint="Search here"
+            android:padding="5dp"
+            android:singleLine="true"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins"
+        android:text="Categories"
+        android:textColor="@color/gray"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <!-- First LinearLayout: Image + "All" Text -->
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="18dp"
+            android:background="@drawable/categred"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <!-- First Image -->
+            <ImageView
+                android:id="@+id/imageIcon1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/allcateg" />
+
+            <!-- Text Below the Image -->
             <TextView
-                android:id="@+id/textView12"
-                android:layout_width="125dp"
-                android:layout_height="40dp"
-                android:fontFamily="@font/poppins_extrabold"
-                android:text="Jhamp"
-                android:textColor="@color/red"
-                android:textSize="20sp"
-                android:layout_marginTop="4dp"/> <!-- Small margin for spacing -->
+                android:id="@+id/textViewAll1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="All"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
         </LinearLayout>
 
+        <!-- Second LinearLayout (Bagong Layout, May Image Lang) -->
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="18dp"
+            android:background="@drawable/categgray"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- Second Image -->
+            <ImageView
+                android:id="@+id/imageIcon2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/tshirtcateg"
+                android:tint="@color/white" />
+
+            <!-- Text Below the Image -->
+            <TextView
+                android:id="@+id/textViewAll2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="T-shirt"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="18dp"
+            android:background="@drawable/categgray"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- Second Image -->
+            <ImageView
+                android:id="@+id/imageIcon3"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/shortcateg"
+                android:tint="@color/white" />
+
+            <!-- Text Below the Image -->
+            <TextView
+                android:id="@+id/textViewAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Short"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="18dp"
+            android:background="@drawable/categgray"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- Second Image -->
+            <ImageView
+                android:id="@+id/imageIcon4"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/pantscateg" />
+
+            <!-- Text Below the Image -->
+            <TextView
+                android:id="@+id/textViewAll5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Pants"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/categgray"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- Second Image -->
+            <ImageView
+                android:id="@+id/imageIcon5"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/shoescateg"
+                android:tint="@color/white" />
+
+            <!-- Text Below the Image -->
+            <TextView
+                android:id="@+id/textViewAll4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Short"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/shoescateg" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- LinearLayout na may background na red at ImageView sa left -->
+            <LinearLayout
+                android:layout_width="370dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/adsbg"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:padding="10dp">
+
+                <!-- LinearLayout para sa text items -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
+
+                    <!-- SALE UP TO Text -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:text="SALE UP TO"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+
+                    <!-- 50% at OFF sa iisang linya -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="50%"
+                            android:textColor="@color/gray"
+                            android:textSize="34sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="OFF"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/categgray"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:padding="5dp"
+                        android:text="Shop Now"
+                        android:textAlignment="center"
+                        android:textColor="@color/white" />
+
+                    <!-- SHOP NOW Button -->
+                </LinearLayout>
+
+                <!-- Image sa kanan -->
+                <ImageView
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="60dp"
+                    android:src="@drawable/discount_amico_1" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- Bagong LinearLayout sa ibaba -->
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_gravity="bottom"
+        android:background="@color/black"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <!-- First LinearLayout: Image + "All" Text -->
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="38dp"
+            android:background="@color/black"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <!-- First Image -->
+            <ImageView
+                android:id="@+id/ivicon"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                app:srcCompat="@drawable/homeicon" />
+
+
+            <!-- Text Below the Image -->
+            <TextView
+                android:id="@+id/textViewAll02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Home"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Second LinearLayout (Bagong Layout, May Image Lang) -->
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="40dp"
+            android:background="@color/black"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- Second Image -->
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                app:srcCompat="@drawable/ordericon" />
+
+
+            <!-- Text Below the Image -->
+            <TextView
+                android:id="@+id/textViewAll3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Orders"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="40dp"
+            android:background="@color/black"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- Second Image -->
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                app:srcCompat="@drawable/carticon" />
+
+
+            <!-- Text Below the Image -->
+            <TextView
+                android:id="@+id/textViewAll03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Cart"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:background="@color/black"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- Second Image -->
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                app:srcCompat="@drawable/profileicon" />
+
+
+            <!-- Text Below the Image -->
+            <TextView
+                android:id="@+id/textViewAll51"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Profile"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
 
     </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+
+
+

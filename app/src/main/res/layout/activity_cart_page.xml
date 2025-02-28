@@ -1,10 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/cart"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".CartPageActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Top Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:padding="16dp">
+
+        <!-- Back Button -->
+        <ImageView
+            android:id="@+id/cartbackButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/back"
+            android:contentDescription="Back"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="15dp"/>
+
+        <!-- Order Text -->
+        <TextView
+            android:id="@+id/cartText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/poppins"
+            android:text="My Cart"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:layout_marginTop="15dp"/>
+
+        <!-- Edit Text -->
+        <TextView
+            android:id="@+id/tvcartEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="200dp"
+            android:text="Edit"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
+    <!-- Cart Item Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- CheckBox (Left Side) -->
+        <CheckBox
+            android:id="@+id/checkboxSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"/>
+
+        <!-- Image Section (Left Side) -->
+        <ImageView
+            android:id="@+id/IVcarttyson"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            app:srcCompat="@drawable/tyson_tshirt"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"/>
+
+        <!-- Text Section (Middle) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tVCartlassic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Classic T-Shirt"
+                android:textSize="20sp" />
+
+            <!-- Color Section -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvcartcolor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:text="Color :"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <!-- Price Section -->
+            <TextView
+                android:id="@+id/tvcartprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/inter"
+                android:text="₱"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Bottom Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:layout_marginTop="450dp"
+        android:background="@drawable/logincurve">
+
+        <TextView
+            android:id="@+id/tvcartItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Items"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvcarttotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total"
+            android:textSize="26sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/bcartcheckout"
+            android:layout_width="370dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:text="Check Out"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/corners"/>
+    </LinearLayout>
+
+</LinearLayout>

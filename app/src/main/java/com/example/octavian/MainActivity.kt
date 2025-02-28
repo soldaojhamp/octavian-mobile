@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, WelcomePageActivity::class.java)
             startActivity(intent)
             finish() // Optional: to close MainActivity after starting HomeActivity
-        }, 3000) // 3000 milliseconds (3 seconds) delay
+        }, 1500) // 3000 milliseconds (3 seconds) delay
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

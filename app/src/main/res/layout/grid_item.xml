@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="8dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Image -->
+    <ImageView
+        android:id="@+id/gridItemImage"
+        android:layout_width="140dp"
+        android:layout_height="110dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/tyson_tshirt" />
+
+    <!-- Classic T-shirt -->
+    <TextView
+        android:id="@+id/gridItemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/poppins"
+        android:text="Classic T-shirt"
+        android:textColor="@android:color/black"
+        android:textSize="10sp" />
+
+    <!-- Brand -->
+    <TextView
+        android:id="@+id/gridItemBrand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/poppins"
+        android:text="Brand"
+        android:textColor="@android:color/black"
+        android:textSize="10sp" />
+
+    <!-- Color -->
+    <TextView
+        android:id="@+id/gridItemColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/poppins"
+        android:text="Color"
+        android:textColor="@android:color/black"
+        android:textSize="10sp" />
+
+    <!-- Size -->
+    <TextView
+        android:id="@+id/gridItemSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/poppins"
+        android:text="Size"
+        android:textColor="@android:color/black"
+        android:textSize="10sp" />
+
+</LinearLayout>
