@@ -1,54 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:id="@+id/main"
     tools:context=".WelcomePageActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/poppins_extrabold"
-        android:gravity="center"
-        android:text="Change Your\nPerspective In Style"
-        android:textAlignment="center"
-        android:textColor="@color/gray"
-        android:textSize="30sp"
-        tools:fontFamily="@font/poppins_extrabold" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins"
-        android:padding="10dp"
-        android:paddingTop="10dp"
-        android:text="Change The Quality Of Your Appearance With Octovian Now!"
-        android:textAlignment="center"
-        android:textColor="@color/gray"
-        android:textSize="14sp" />
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="450dp"
-        android:src="@drawable/thrift_shop_amico"
-        android:adjustViewBounds="true"
-        android:paddingTop="20dp" />
+            <LinearLayout
+                android:layout_width="35dp"
+                android:layout_height="5dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/topcolor"
+                android:orientation="vertical">
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="370dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/corners"
-        android:text="Continue"
-        android:textColor="@color/white"
-        android:layout_marginTop="130dp"
-        android:padding="10dp" />
-</LinearLayout>
+
+            <LinearLayout
+                android:layout_width="35dp"
+                android:layout_height="5dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/topcolor2"
+                android:orientation="vertical"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="35dp"
+                android:layout_height="5dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/topcolor2"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/poppins_extrabold"
+            android:text="Change Your"
+            android:textAlignment="center"
+            android:textColor="#212121"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_extrabold"
+            android:text=" Perspective In Style"
+            android:textColor="#212121"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="Change The Quality Of Your Appearance With Outfitopia Now!"
+            android:textAlignment="center"
+            android:textColor="#212121"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.425"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="600dp"
+            android:layout_marginTop="110dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:srcCompat="@drawable/welcomeimg" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button"
+            android:layout_width="320dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/redbg"
+            android:fontFamily="@font/poppins"
+            android:text="Continue"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
