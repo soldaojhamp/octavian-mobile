@@ -7,8 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.ImageView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.octavian.adapter.RecyclerViewProductsAdapter
+import com.example.octavian.dataClass.Product
 
 class HomePageActivity : AppCompatActivity() {
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerViewProductsAdapter: RecyclerViewProductsAdapter
+    private var productList = mutableListOf<Product>()
+    private var product_id: String? = null
+    private var varName: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -20,6 +30,14 @@ class HomePageActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Set up RecyclerView
+        recyclerView = findViewById(R.id.rvProductLists)
+        recyclerViewProductsAdapter = RecyclerViewProductsAdapter(productList)
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.adapter = recyclerViewProductsAdapter
+
+        loadSampleProduct() // Load sample products
 
         // Fetch and set click listeners for the bottom navigation icons.
         val homeIcon = findViewById<ImageView>(R.id.ivicon)
@@ -47,5 +65,18 @@ class HomePageActivity : AppCompatActivity() {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun loadSampleProduct() {
+        // Use mutable list so you can add items
+        val sampleProduct = mutableListOf(
+            Product("", "Classic T-shirt", "", "T-shirt", "No Brand", "Black", "L", 500)
+        )
+
+        // Add the sample product to the main product list
+        productList.addAll(sampleProduct)
+
+        // Notify adapter that the data has changed so RecyclerView can update
+        recyclerViewProductsAdapter.notifyDataSetChanged()
     }
 }

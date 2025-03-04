@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView16"
+            android:id="@+id/ivProductImage"
             android:layout_width="150dp"
             android:layout_height="120dp"
             android:layout_marginStart="15dp"
@@ -26,7 +26,7 @@
             app:srcCompat="@drawable/tyson_tshirt" />
 
         <TextView
-            android:id="@+id/textView31"
+            android:id="@+id/tvProductName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -34,7 +34,7 @@
             android:text="Classic T-Shirt"
             android:textColor="@color/gray"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView16" />
+            app:layout_constraintTop_toBottomOf="@+id/ivProductImage" />
 
         <TextView
             android:id="@+id/textView32"
@@ -46,7 +46,7 @@
             android:textColor="@color/gray"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+            app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
 
         <TextView
             android:id="@+id/textView33"
@@ -73,7 +73,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
         <TextView
-            android:id="@+id/textView35"
+            android:id="@+id/tvBrand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -82,10 +82,10 @@
             android:textColor="@color/gray"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/textView32"
-            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+            app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
 
         <TextView
-            android:id="@+id/textView36"
+            android:id="@+id/tvColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -97,7 +97,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView32" />
 
         <TextView
-            android:id="@+id/textView37"
+            android:id="@+id/tvSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -106,10 +106,10 @@
             android:textColor="@color/gray"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/textView34"
-            app:layout_constraintTop_toBottomOf="@+id/textView36" />
+            app:layout_constraintTop_toBottomOf="@+id/tvColor" />
 
         <TextView
-            android:id="@+id/textView40"
+            android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -118,7 +118,7 @@
             android:textColor="@color/gray"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView16" />
+            app:layout_constraintTop_toBottomOf="@+id/ivProductImage" />
 
         <TextView
             android:id="@+id/textView38"
@@ -128,11 +128,11 @@
             android:text="₱"
             android:textColor="@color/gray"
             android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView40"
-            app:layout_constraintTop_toBottomOf="@+id/imageView16" />
+            app:layout_constraintEnd_toStartOf="@+id/tvPrice"
+            app:layout_constraintTop_toBottomOf="@+id/ivProductImage" />
 
         <TextView
-            android:id="@+id/textView39"
+            android:id="@+id/tvAddcart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
