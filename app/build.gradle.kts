@@ -50,4 +50,30 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
+    
+    implementation (libs.androidx.core.ktx) // Core KTX
+    implementation (libs.androidx.lifecycle.runtime.ktx)
+
+
+
+
+    //retrofit and json response converter
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    //viewmodel
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+
+    //http client
+    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp)
+
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+
+
+
+
 }
