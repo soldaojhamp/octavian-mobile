@@ -47,76 +47,15 @@
 
     </LinearLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="690dp" />
 
-
-    <LinearLayout
-        android:layout_width="387dp"
-        android:layout_height="150dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="16dp">
-
-        <!-- Image Section (Left Side) -->
-        <ImageView
-            android:id="@+id/IVEditcarttyson"
-            android:layout_width="95dp"
-            android:layout_height="95dp"
-            app:srcCompat="@drawable/tyson_tshirt"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"/>
-
-        <!-- Text Section (Middle) -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tVEditcartlassic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Classic T-Shirt"
-                android:textSize="20sp" />
-
-            <!-- Color Section -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvEditcartcolor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter"
-                    android:text="Color :"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-
-            <!-- Price Section -->
-            <TextView
-                android:id="@+id/tvEditcartprice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/inter"
-                android:text="₱"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:orientation="vertical"
-        android:layout_marginTop="525dp"
+        android:layout_height="120dp"
+        android:orientation="vertical"  
         android:background="@drawable/logincurve"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
@@ -148,7 +87,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 
 

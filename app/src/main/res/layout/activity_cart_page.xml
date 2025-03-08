@@ -51,83 +51,14 @@
     </LinearLayout>
 
     <!-- Cart Item Layout -->
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="16dp">
-
-        <!-- CheckBox (Left Side) -->
-        <CheckBox
-            android:id="@+id/checkboxSelect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="10dp"/>
-
-        <!-- Image Section (Left Side) -->
-        <ImageView
-            android:id="@+id/IVcarttyson"
-            android:layout_width="95dp"
-            android:layout_height="95dp"
-            app:srcCompat="@drawable/tyson_tshirt"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"/>
-
-        <!-- Text Section (Middle) -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tVCartlassic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Classic T-Shirt"
-                android:textSize="20sp" />
-
-            <!-- Color Section -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvcartcolor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter"
-                    android:text="Color :"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-
-            <!-- Price Section -->
-            <TextView
-                android:id="@+id/tvcartprice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/inter"
-                android:text="₱"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </LinearLayout>
-
+        android:layout_height="640dp" />
     <!-- Bottom Section -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="170dp"
         android:orientation="vertical"
-        android:layout_marginTop="450dp"
         android:background="@drawable/logincurve">
 
         <TextView

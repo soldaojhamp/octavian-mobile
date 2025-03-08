@@ -21,9 +21,19 @@ data class CartItem(
     val image_path: String?,
     val item_title: String,
     var items: Int,
-    val pricePerItem: Int // Adding price for calculation
+    val pricePerItem: Int, // Adding price for calculation
+    val color: String
 ) {
     fun totalPrice(): Int {
         return items * pricePerItem
     }
+    // Data class for OrderItem
+    data class OrderItem(
+        val item_title: String,
+        val pricePerItem: Double,
+        val color: String,
+        val status: String,
+        val image_path: String
+    )
+
 }
