@@ -1,16 +1,15 @@
-package com.example.octavian
+package com.example.octavian.tools
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.octavian.R
 
-class CheckOutActivity : AppCompatActivity() {
+class AddressActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_check_out)
+        setContentView(R.layout.activity_address)
 
     }
 }

@@ -46,14 +46,17 @@ class RecyclerViewProductsAdapter(
         holder.tvSize.text = item.size
 
 
-        holder.tvAddcart.setOnClickListener{
+        holder.tvAddcart.setOnClickListener {
             val cartItem = CartItem(
                 product_id = item.product_id,
                 image_path = item.image_path,
                 item_title = item.item_title,
                 items = 1,
-                pricePerItem = item.price
+                pricePerItem = item.price,
+                color = item.color
             )
+
+        
 
             if(!GlobalVariables.CARTLIST.contains(cartItem)){
                 listener.onCartClick(cartItem)
