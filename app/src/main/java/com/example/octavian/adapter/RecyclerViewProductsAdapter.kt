@@ -52,10 +52,11 @@ class RecyclerViewProductsAdapter(
                 image_path = item.image_path,
                 item_title = item.item_title,
                 items = 1,
-                pricePerItem = item.price
+                pricePerItem = item.price,
+                color = item.color
             )
 
-            if(!GlobalVariables.CARTLIST.contains(cartItem)){
+            if(!CARTLIST.contains(cartItem)){
                 listener.onCartClick(cartItem)
                 Snackbar.make(holder.itemView, "${item.item_title} added to cart", Snackbar.LENGTH_SHORT).show()
             } else {

@@ -34,6 +34,7 @@ data class CartItem(
         val color: String,
         val status: String,
         val image_path: String
+
     )
 
 }

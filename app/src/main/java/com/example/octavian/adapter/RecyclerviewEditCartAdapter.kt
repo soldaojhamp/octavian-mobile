@@ -16,6 +16,8 @@ class RecyclerViewEditCartAdapter(
     private val cartList: MutableList<CartItem>
 ) : RecyclerView.Adapter<RecyclerViewEditCartAdapter.MyViewHolder>() {
 
+    private val selectedItems = mutableSetOf<CartItem>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_cart_lists, parent, false)
         return MyViewHolder(view)
@@ -27,18 +29,26 @@ class RecyclerViewEditCartAdapter(
         holder.tvPrice.text = "₱${item.pricePerItem}"
         holder.tvColor.text = item.color
 
-        // Load the image if necessary (e.g., using Glide or Picasso)
-        // Glide.with(holder.itemView.context).load(item.image_path).into(holder.ivProductImage)
-
+        // Handle item selection
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                Snackbar.make(holder.itemView, "${item.item_title} selected", Snackbar.LENGTH_SHORT).show()
-            }
+            if (isChecked) selectedItems.add(item) else selectedItems.remove(item)
         }
     }
 
     override fun getItemCount(): Int {
         return cartList.size
+    }
+
+    fun selectAll(select: Boolean) {
+        selectedItems.clear()
+        if (select) selectedItems.addAll(cartList)
+        notifyDataSetChanged()
+    }
+
+    fun removeSelectedItems() {
+        cartList.removeAll(selectedItems)
+        selectedItems.clear()
+        notifyDataSetChanged()
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
