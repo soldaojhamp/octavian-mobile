@@ -27,6 +27,7 @@ data class CartItem(
     fun totalPrice(): Int {
         return items * pricePerItem
     }
+
     // Data class for OrderItem
     data class OrderItem(
         val item_title: String,

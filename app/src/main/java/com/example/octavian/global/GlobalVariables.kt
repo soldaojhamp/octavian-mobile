@@ -10,6 +10,7 @@ object GlobalVariables {
 
     fun initialize(context: Context) {
         appContext = context.applicationContext
+        CARTLIST = mutableListOf() // Initialize CARTLIST
     }
     val cacheDir: File
         get() = appContext.cacheDir

@@ -13,7 +13,6 @@ import com.example.octavian.tools.ClickListenerInit
 import com.example.octavian.adapter.RecyclerViewProductsAdapter.MyViewHolder
 import com.example.octavian.dataClass.CartItem
 import com.example.octavian.global.GlobalVariables
-import com.example.octavian.global.GlobalVariables.CARTLIST
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -28,15 +27,6 @@ class RecyclerViewProductsAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-//        val product = ProductList[position]
-//        val productId = product.product_id
-//        val productImage = product.image_path
-//        val productCategory = product.category
-//        val productTitle = product.item_title
-//        val productBrand = product.brand
-//        val productColor = product.color
-//        val productSize = product.size
-//        val productPrice = product.price
 
         val item = ProductList.get(position)
         holder.tvProductName.text =item.item_title
@@ -45,6 +35,17 @@ class RecyclerViewProductsAdapter(
         holder.tvColor.text = item.color
         holder.tvSize.text = item.size
 
+//        // Check if the item image URL is valid
+//        if (!item.image_path.isNullOrEmpty()) {
+//            Picasso.get()
+//                .load(item.image_path)
+//                .placeholder(R.drawable.no_img_placeholder)
+//                .error(R.drawable.no_img_placeholder) // Handle error
+//                .into(holder.ivProductImage)
+//        } else {
+//            // Optionally set a default image if URL is empty
+//            holder.ivProductImage.setImageResource(R.drawable.no_img_placeholder)
+//        }
 
         holder.tvAddcart.setOnClickListener{
             val cartItem = CartItem(
@@ -52,8 +53,8 @@ class RecyclerViewProductsAdapter(
                 image_path = item.image_path,
                 item_title = item.item_title,
                 items = 1,
-                pricePerItem = item.price
-            )
+                color = item.color,
+                pricePerItem = item.price)
 
             if(!GlobalVariables.CARTLIST.contains(cartItem)){
                 listener.onCartClick(cartItem)
@@ -62,14 +63,9 @@ class RecyclerViewProductsAdapter(
                 Snackbar.make(holder.itemView, "${item.item_title} is already in cart", Snackbar.LENGTH_SHORT).show()
             }
         }
-
-
     }
 
-
-    override fun getItemCount(): Int {
-        return ProductList.size
-    }
+    override fun getItemCount(): Int = ProductList.size
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvAddcart: TextView = itemView.findViewById(R.id.tvAddcart)
