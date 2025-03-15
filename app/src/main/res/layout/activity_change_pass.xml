@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#FFF5F5"
     android:padding="20dp"
-    tools:context=".ChangePassActivity">
+    tools:context=".activity.ChangePassActivity">
 
     <!-- Back Icon and Title at the Top -->
     <LinearLayout

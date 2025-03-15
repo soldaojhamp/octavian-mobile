@@ -13,46 +13,46 @@
         android:theme="@style/Theme.Octavian"
         tools:targetApi="31">
         <activity
-            android:name=".ForgotSecActivity"
+            android:name=".activity.ForgotSecActivity"
             android:exported="false" />
         <activity
-            android:name=".ChangePassActivity"
+            android:name=".activity.ChangePassActivity"
             android:exported="false" />
         <activity
-            android:name=".AddressActivity"
+            android:name=".activity.AddressActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activity.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".CheckOutActivity"
+            android:name=".activity.CheckOutActivity"
             android:exported="false" />
         <activity
-            android:name=".ForgotPassActivity"
+            android:name=".activity.ForgotPassActivity"
             android:exported="false" />
         <activity
-            android:name=".EditCartActivty"
+            android:name=".activity.EditCartActivty"
             android:exported="false" />
         <activity
-            android:name=".CartPageActivity"
+            android:name=".activity.CartPageActivity"
             android:exported="false" />
         <activity
-            android:name=".OrdersActivity"
+            android:name=".activity.OrdersActivity"
             android:exported="false" />
         <activity
-            android:name=".HomePageActivity"
+            android:name=".activity.HomePageActivity"
             android:exported="false" />
         <activity
-            android:name=".LogInActivity"
+            android:name=".activity.LogInActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".activity.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".WelcomePageActivity"
+            android:name=".activity.WelcomePageActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

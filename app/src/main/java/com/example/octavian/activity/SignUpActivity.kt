@@ -1,12 +1,11 @@
-package com.example.octavian
+package com.example.octavian.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.octavian.HomePageActivity
-import com.example.octavian.LogInActivity
+import com.example.octavian.R
 
 class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
