@@ -28,7 +28,7 @@
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="10dp"
                 android:fontFamily="@font/poppins"
                 android:gravity="center"
                 android:text="Welcome,"
@@ -41,7 +41,7 @@
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="center"
@@ -56,7 +56,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="end"
-                android:layout_marginEnd="15dp"
+                android:layout_marginEnd="10dp"
                 android:src="@drawable/logowhitebg___copy"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -68,7 +68,7 @@
     <LinearLayout
         android:layout_width="380dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="10dp"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -105,23 +105,27 @@
         android:textColor="@color/gray"
         android:textSize="15sp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:orientation="horizontal"
         android:padding="5dp">
 
         <!-- First LinearLayout: Image + "All" Text -->
+
+        <!-- Second LinearLayout (Bagong Layout, May Image Lang) -->
         <LinearLayout
+            android:id="@+id/linearLayout13"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="18dp"
+            android:layout_marginStart="10dp"
             android:background="@drawable/categred"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <!-- First Image -->
             <ImageView
@@ -144,15 +148,17 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Second LinearLayout (Bagong Layout, May Image Lang) -->
         <LinearLayout
+            android:id="@+id/linearLayout11"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="18dp"
             android:background="@drawable/categgray"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout14"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout13"
+            app:layout_constraintTop_toTopOf="parent">
             <!-- Second Image -->
             <ImageView
                 android:id="@+id/imageIcon2"
@@ -176,13 +182,16 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout14"
             android:layout_width="56dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="18dp"
             android:background="@drawable/categgray"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout12"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout13"
+            app:layout_constraintTop_toTopOf="parent">
             <!-- Second Image -->
             <ImageView
                 android:id="@+id/imageIcon3"
@@ -207,13 +216,16 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout10"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="18dp"
             android:background="@drawable/categgray"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout12"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout14"
+            app:layout_constraintTop_toTopOf="parent">
             <!-- Second Image -->
             <ImageView
                 android:id="@+id/imageIcon4"
@@ -237,12 +249,16 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout12"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/categgray"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
             <!-- Second Image -->
             <ImageView
                 android:id="@+id/imageIcon5"
@@ -264,15 +280,9 @@
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/shoescateg" />
         </LinearLayout>
 
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -289,9 +299,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:background="@drawable/adsbg"
-                android:padding="20dp">
+                android:padding="15dp">
 
                 <TextView
                     android:id="@+id/textView20"
@@ -300,7 +310,7 @@
                     android:fontFamily="@font/poppins"
                     android:text="SALE UP TO"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -330,11 +340,11 @@
 
                 <TextView
                     android:id="@+id/textView24"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/categgray"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:padding="10dp"
+                    android:background="@drawable/adsgray"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="5dp"
                     android:text="Shop Now"
                     android:textAlignment="center"
                     android:textColor="@color/white"
@@ -344,8 +354,8 @@
 
                 <ImageView
                     android:id="@+id/imageView14"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
