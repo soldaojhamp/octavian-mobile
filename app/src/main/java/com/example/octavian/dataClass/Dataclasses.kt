@@ -37,4 +37,15 @@ data class CartItem(
         val image_path: String
     )
 
+    data class CheckoutItem(
+        val product_id: String,
+        val image_path: String?,
+        val item_title: String,
+        var items: Int,
+        val pricePerItem: Int,
+        val color: String
+    )
+
+
 }
+

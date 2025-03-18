@@ -53,7 +53,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
-            android:text="Account Recovery"
+            android:text="Enter security code"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -62,19 +62,103 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Enter your e-mail address below to reset your password"
+            android:text="Please check your Gmail for a text message with your code. Your code is 6 characters in length."
             android:textAlignment="center"
             android:textColor="#A8A8A8"
             android:textSize="14sp" />
 
-        <EditText
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/forgotinput"
-            android:hint="Johndoe@gmail.com"
-            android:padding="12dp"
-            android:textColorHint="#80B2B2B2" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/editText6"
+                android:layout_width="48dp"
+                android:layout_height="60dp"
+                android:background="@drawable/forgotinput"
+                android:hint="4"
+                android:padding="12dp"
+                android:textAlignment="center"
+                android:textColorHint="#80B2B2B2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/editText5"
+                app:layout_constraintStart_toEndOf="@+id/editText3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editText5"
+                android:layout_width="48dp"
+                android:layout_height="60dp"
+                android:background="@drawable/forgotinput"
+                android:hint="5"
+                android:padding="12dp"
+                android:textAlignment="center"
+                android:textColorHint="#80B2B2B2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/editText"
+                app:layout_constraintStart_toEndOf="@+id/editText6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@+id/editText4"
+                android:layout_width="48dp"
+                android:layout_height="60dp"
+                android:background="@drawable/forgotinput"
+                android:hint="2"
+                android:padding="12dp"
+                android:textAlignment="center"
+                android:textColorHint="#80B2B2B2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/editText3"
+                app:layout_constraintStart_toEndOf="@+id/editText2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@+id/editText3"
+                android:layout_width="48dp"
+                android:layout_height="60dp"
+                android:background="@drawable/forgotinput"
+                android:hint="3"
+                android:padding="12dp"
+                android:textAlignment="center"
+                android:textColorHint="#80B2B2B2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/editText6"
+                app:layout_constraintStart_toEndOf="@+id/editText4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="48dp"
+                android:layout_height="60dp"
+                android:background="@drawable/forgotinput"
+                android:hint="6"
+                android:padding="12dp"
+                android:textAlignment="center"
+                android:textColorHint="#80B2B2B2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="48dp"
+                android:layout_height="60dp"
+                android:background="@drawable/forgotinput"
+                android:hint="1"
+                android:padding="12dp"
+                android:textAlignment="center"
+                android:textColorHint="#80B2B2B2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/editText4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/bsubmitForgotpass"
