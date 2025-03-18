@@ -12,10 +12,8 @@ import com.example.octavian.R
 import com.example.octavian.tools.ClickListenerInit
 import com.example.octavian.adapter.RecyclerViewProductsAdapter.MyViewHolder
 import com.example.octavian.dataClass.CartItem
-import com.example.octavian.global.GlobalVariables
 import com.example.octavian.global.GlobalVariables.CARTLIST
 import com.google.android.material.snackbar.Snackbar
-
 
 class RecyclerViewProductsAdapter(
     private val ProductList: MutableList<Product>
@@ -28,45 +26,31 @@ class RecyclerViewProductsAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-//        val product = ProductList[position]
-//        val productId = product.product_id
-//        val productImage = product.image_path
-//        val productCategory = product.category
-//        val productTitle = product.item_title
-//        val productBrand = product.brand
-//        val productColor = product.color
-//        val productSize = product.size
-//        val productPrice = product.price
+        val item = ProductList[position]
+        holder.tvProductName.text = item.productName
+        holder.tvPrice.text = "₱${item.productPrice}"
+        holder.tvBrand.text = item.productBrand
+        holder.tvColor.text = item.productColor
+        holder.tvSize.text = item.productSize
 
-        val item = ProductList.get(position)
-        holder.tvProductName.text =item.item_title
-        holder.tvPrice.text = "₱${item.price}"
-        holder.tvBrand.text = item.brand
-        holder.tvColor.text = item.color
-        holder.tvSize.text = item.size
-
-
-        holder.tvAddcart.setOnClickListener{
+        holder.tvAddcart.setOnClickListener {
             val cartItem = CartItem(
-                product_id = item.product_id,
-                image_path = item.image_path,
-                item_title = item.item_title,
+                product_id = item.id,
+                image_path = item.productImage,
+                item_title = item.productName,
                 items = 1,
-                pricePerItem = item.price,
-                color = item.color
+                pricePerItem = item.productPrice,
+                color = item.productColor
             )
 
-            if(!CARTLIST.contains(cartItem)){
+            if (!CARTLIST.contains(cartItem)) {
                 listener.onCartClick(cartItem)
-                Snackbar.make(holder.itemView, "${item.item_title} added to cart", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(holder.itemView, "${item.productName} added to cart", Snackbar.LENGTH_SHORT).show()
             } else {
-                Snackbar.make(holder.itemView, "${item.item_title} is already in cart", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(holder.itemView, "${item.productName} is already in cart", Snackbar.LENGTH_SHORT).show()
             }
         }
-
-
     }
-
 
     override fun getItemCount(): Int {
         return ProductList.size
@@ -74,8 +58,8 @@ class RecyclerViewProductsAdapter(
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvAddcart: TextView = itemView.findViewById(R.id.tvAddcart)
-        val tvPrice : TextView = itemView.findViewById(R.id.tvPrice)
-        val tvSize: TextView  = itemView.findViewById(R.id.tvSize)
+        val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
+        val tvSize: TextView = itemView.findViewById(R.id.tvSize)
         val tvColor: TextView = itemView.findViewById(R.id.tvColor)
         val tvBrand: TextView = itemView.findViewById(R.id.tvBrand)
         val tvProductName: TextView = itemView.findViewById(R.id.tvProductName)

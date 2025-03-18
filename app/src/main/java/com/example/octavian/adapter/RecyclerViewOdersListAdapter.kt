@@ -16,7 +16,8 @@ class RecyclerViewOrdersListAdapter(
 ) : RecyclerView.Adapter<RecyclerViewOrdersListAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_order_lists, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.layout_order_lists, parent, false)
         return MyViewHolder(view)
     }
 
@@ -27,16 +28,19 @@ class RecyclerViewOrdersListAdapter(
         holder.tvColor.text = item.color
         holder.tvStatus.text = item.status
 
-        // Load the image if necessary (e.g., using Glide or Picasso)
-        // Glide.with(holder.itemView.context).load(item.image_path).into(holder.ivProductImage)
+        // Glide/Picasso can be added here if needed to load images
 
         holder.tvCancel.setOnClickListener {
             Snackbar.make(holder.itemView, "Order ${item.item_title} canceled", Snackbar.LENGTH_SHORT).show()
         }
     }
 
-    override fun getItemCount(): Int {
-        return orderList.size
+    override fun getItemCount(): Int = orderList.size
+
+    fun updateList(newList: List<CartItem.OrderItem>) {
+        orderList.clear()
+        orderList.addAll(newList)
+        notifyDataSetChanged()
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -1,15 +1,16 @@
 package com.example.octavian.dataClass
 
 data class Product(
-    val product_id: String,     // Unique identifier for the shop item
-    val image_path: String?,     // URL or resource ID for the item's image
-    val category: String,
-    val item_title: String,
-    val brand: String,
-    val color: String,
-    val size: String,
-    val price: Int,
+    val id: String,
+    val productName: String,
+    val productImage: String,
+    val productCategory: String, // This is the correct field
+    val productBrand: String,
+    val productColor: String,
+    val productSize: String,
+    val productPrice: Int
 )
+
 
     // val description: String? // Optional description of the item
 //)fun Product.formattedPrice(): String {
