@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.play.services.base)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.androidx.ui.test.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -69,4 +70,19 @@ dependencies {
 
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
 
+
+    // Retrofit and JSON response converter
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // Glide for image loading
+    implementation(libs.glide)
+//    annotationProcessor(libs.glide.compiler)
+
+    // Testing libraries
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+//    implementation("com.github.abdularis:circularimageview:<latest-version>")
 }

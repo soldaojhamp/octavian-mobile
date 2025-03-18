@@ -24,11 +24,11 @@ class RecyclerViewEditCartAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = cartList[position]
         holder.tvProductName.text = item.item_title
-        holder.tvPrice.text = "₱${item.pricePerItem}"
+        holder.tvPrice.text = "${item.price}"
         holder.tvColor.text = item.color
 
         // Load the image if necessary (e.g., using Glide or Picasso)
-        // Glide.with(holder.itemView.context).load(item.image_path).into(holder.ivProductImage)
+        // Glide.with(holder.itemView.context).load(item.image_path).into(holder.ivCartImage)
 
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -43,7 +43,7 @@ class RecyclerViewEditCartAdapter(
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val checkBox: CheckBox = itemView.findViewById(R.id.checkBox)
-        val ivProductImage: ImageView = itemView.findViewById(R.id.imageView15)
+        val ivCartImage: ImageView = itemView.findViewById(R.id.ivCartImage)
         val tvProductName: TextView = itemView.findViewById(R.id.textView21)
         val tvColor: TextView = itemView.findViewById(R.id.textView26)
         val tvPrice: TextView = itemView.findViewById(R.id.textView30)

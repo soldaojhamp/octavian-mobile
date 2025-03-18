@@ -116,6 +116,7 @@
 
         <!-- First LinearLayout: Image + "All" Text -->
         <LinearLayout
+            android:id="@+id/linearLayoutAll"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="18dp"
@@ -146,6 +147,7 @@
 
         <!-- Second LinearLayout (Bagong Layout, May Image Lang) -->
         <LinearLayout
+            android:id="@+id/linearLayoutTshirt"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
@@ -176,6 +178,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayoutShort"
             android:layout_width="56dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
@@ -207,6 +210,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayoutPants"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
@@ -237,6 +241,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayoutShoes"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"

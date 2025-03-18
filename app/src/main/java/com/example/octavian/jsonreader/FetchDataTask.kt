@@ -20,7 +20,7 @@ class FetchActivity : AppCompatActivity() {
 
         // Call the fetchData function
         lifecycleScope.launch {
-            val jsonResponse = fetchData("http://192.168.212.15/final_admin_api/") // Replace with your actual URL
+            val jsonResponse = fetchData("http://192.168.35.15/final_admin_api/") // Replace with your actual URL
             Log.d("JSON Response", jsonResponse) // Log the response
         }
     }

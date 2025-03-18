@@ -3,13 +3,14 @@ package com.example.octavian.models
 data class LoginResponse(
     val success: Boolean,
     val message: String,
-    val user: Int? = null
+    val userId: Int,
+    val user_id: Int? // Ensure this field is present
 
 )
 
 data class LoginUser(
-    val email: String,
-    val password: String
+    val user_email: String,
+    val password: String,
 )
 
 

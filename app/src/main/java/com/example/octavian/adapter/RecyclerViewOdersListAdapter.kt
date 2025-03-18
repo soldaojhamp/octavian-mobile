@@ -23,7 +23,7 @@ class RecyclerViewOrdersListAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = orderList[position]
         holder.tvProductName.text = item.item_title
-        holder.tvPrice.text = "₱${item.pricePerItem}"
+        holder.tvPrice.text = "${item.pricePerItem}"
         holder.tvColor.text = item.color
         holder.tvStatus.text = item.status
 

@@ -3,13 +3,12 @@ package com.example.octavian.models
 data class SignUpResponse(
     val success: Boolean,
     val message: String,
-    val user: User? = null
+    val userId: User? = null
 )
 
 data class User(
-    val id: Int? = null,
+    val user_id: Int? = null,
     val name: String,
     val email: String,
     val password: String
-
 )

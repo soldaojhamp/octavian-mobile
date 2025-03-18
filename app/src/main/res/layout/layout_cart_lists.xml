@@ -10,10 +10,14 @@
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="15dp">
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="15dp">
+
+
 
         <CheckBox
             android:id="@+id/checkBox"
@@ -24,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView15"
+            android:id="@+id/ivCartImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -41,7 +45,7 @@
             android:text="Classic T-Shirt"
             android:textColor="@color/gray"
             android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/imageView15"
+            app:layout_constraintStart_toEndOf="@+id/ivCartImage"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -52,7 +56,7 @@
             android:fontFamily="@font/poppins"
             android:text="Color:"
             android:textColor="@color/gray"
-            app:layout_constraintStart_toEndOf="@+id/imageView15"
+            app:layout_constraintStart_toEndOf="@+id/ivCartImage"
             app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
         <TextView
@@ -74,7 +78,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="₱"
             android:textColor="@color/gray"
-            app:layout_constraintStart_toEndOf="@+id/imageView15"
+            app:layout_constraintStart_toEndOf="@+id/ivCartImage"
             app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
         <TextView
@@ -86,5 +90,8 @@
             android:textColor="@color/gray"
             app:layout_constraintStart_toEndOf="@+id/textView27"
             app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>

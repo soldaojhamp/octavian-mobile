@@ -1,83 +1,100 @@
 package com.example.octavian.tools
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.octavian.R
 import com.example.octavian.adapter.RecyclerViewProductsAdapter
 import com.example.octavian.dataClass.Product
+import com.example.octavian.Api.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomePageActivity : AppCompatActivity() {
+
+    private lateinit var userNameTextView: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewProductsAdapter: RecyclerViewProductsAdapter
     private var productList = mutableListOf<Product>()
-    private var product_id: String? = null
-    private var varName: String? = null
+    private var userId: Int = 1 // Default value, will be replaced
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_home_page)
 
-        // Adjusting the layout for system insets.
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        userNameTextView = findViewById(R.id.textView12)
 
-        // Set up RecyclerView
+
+        // Retrieve user ID from SharedPreferences
+        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        userId = sharedPreferences.getInt("user_id", -1) // -1 is the default value if not found
+        val userName = sharedPreferences.getString("user_name", "User") // Default to "User " if not found
+
+
+        userNameTextView.text = userName
+
+        // Initialize RecyclerView
         recyclerView = findViewById(R.id.rvProductLists)
-        recyclerViewProductsAdapter = RecyclerViewProductsAdapter(productList)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
+
+        // Initialize the adapter with productList, context, and userId
+        recyclerViewProductsAdapter = RecyclerViewProductsAdapter(productList, this, userId)
         recyclerView.adapter = recyclerViewProductsAdapter
 
-        loadSampleProduct() // Load sample products
+        // Fetch products from the API
+        fetchProducts()
 
-        // Fetch and set click listeners for the bottom navigation icons.
-        val homeIcon = findViewById<ImageView>(R.id.ivicon)
-        homeIcon.setOnClickListener {
-            // Since you're already on HomePageActivity, you might want to refresh or do nothing.
-            // For demonstration, we're restarting the HomePageActivity.
-            val intent = Intent(this, HomePageActivity::class.java)
-            startActivity(intent)
-        }
-
-        val ordersIcon = findViewById<ImageView>(R.id.imageView6)
-        ordersIcon.setOnClickListener {
-            val intent = Intent(this, OrdersActivity::class.java)
-            startActivity(intent)
-        }
-
-        val cartIcon = findViewById<ImageView>(R.id.imageView7)
-        cartIcon.setOnClickListener {
-            val intent = Intent(this, CartPageActivity::class.java)
-            startActivity(intent)
-        }
-
-        val profileIcon = findViewById<ImageView>(R.id.imageView8)
-        profileIcon.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
-        }
+        // Set up bottom navigation click listeners
+        setupBottomNavigation()
     }
 
-    private fun loadSampleProduct() {
-        // Use mutable list so you can add items
-        val sampleProduct = mutableListOf(
-            Product("", "Classic T-shirt", "", "T-shirt", "No Brand", "Black", "L", 500)
-        )
 
-        // Add the sample product to the main product list
-        productList.addAll(sampleProduct)
 
-        // Notify adapter that the data has changed so RecyclerView can update
-        recyclerViewProductsAdapter.notifyDataSetChanged()
+    private fun fetchProducts() {
+        RetrofitClient.instance.getProducts().enqueue(object : Callback<List<Product>> {
+            override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { products ->
+                        productList.clear()
+                        productList.addAll(products)
+                        recyclerViewProductsAdapter.notifyDataSetChanged()
+                    } ?: run {
+                        Toast.makeText(this@HomePageActivity, "No products found", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@HomePageActivity, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Product>>, t: Throwable) {
+                Toast.makeText(this@HomePageActivity, "Error: ${t.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun setupBottomNavigation() {
+        findViewById<ImageView>(R.id.ivicon).setOnClickListener {
+            startActivity(Intent(this, HomePageActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.imageView6).setOnClickListener {
+            startActivity(Intent(this, OrdersActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.imageView7).setOnClickListener {
+            startActivity(Intent(this, CartPageActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.imageView8).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
     }
 }
