@@ -1,10 +1,11 @@
 package com.example.octavian.Api
 
-import com.example.octavian.model.UpdateProfileResponse
 import com.example.octavian.model.UserProfileResponse
 import com.example.octavian.dataClass.CartItem
 import com.example.octavian.dataClass.Product
 import com.example.octavian.model.LogoutResponse
+import com.example.octavian.model.UpdateProfileRequest
+import com.example.octavian.model.UpdateProfileResponse
 import com.example.octavian.models.SignUpResponse
 import com.example.octavian.models.User
 import com.example.octavian.models.LoginResponse
@@ -50,16 +51,14 @@ interface ApiService {
 
     // EDIT PROFILE
     @GET("get_userprofile.php")
-    suspend fun getUserProfile(@Query("user_id") userId: Int): Response<UserProfileResponse>
+    suspend fun getUserProfile(
+        @Query("user_id") userId: Int // Use @Query instead of @Path
+    ): Response<UserProfileResponse>
 
-    @FormUrlEncoded
+
+    @Headers("Content-Type: application/json")
     @POST("update_userprofile.php")
     suspend fun updateUserProfile(
-        @Field("user_id") userId: Int,
-        @Field("user_fullname") fullName: String,
-        @Field("user_name") userName: String,
-        @Field("user_email") email: String,
-        @Field("contact_number") contactNumber: String,
-        @Field("address") address: String
+    @Body request: UpdateProfileRequest // Accept the request object
     ): Response<UpdateProfileResponse>
 }

@@ -15,6 +15,7 @@ import com.example.octavian.model.UserProfileResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var logoutButton: Button
@@ -25,11 +26,12 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var tvAddress: TextView
     private var userId: Int = -1 // Default value, will be replaced
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_profile)
+
+        Log.d("ProfileActivity", "Activity created")
 
         // Initialize views
         logoutButton = findViewById(R.id.logoutButton)
@@ -43,14 +45,16 @@ class ProfileActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         userId = sharedPreferences.getInt("user_id", -1) // Default to -1 if not found
 
+        Log.d("ProfileActivity", "User ID from SharedPreferences: $userId")
+
         // Check if user ID is valid
         if (userId == -1) {
-            Toast.makeText(this, "User  not logged in", Toast.LENGTH_SHORT).show()
-            finish() // Close the activity if user is not logged in
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+            redirectToLogin()
             return
         }
 
-        // Call fetchUser Profile to get user data
+        // Call fetchUserProfile to get user data
         fetchUserProfile(userId)
 
         // Set up the click listener for the logout button
@@ -60,18 +64,32 @@ class ProfileActivity : AppCompatActivity() {
 
         // Set up the click listener for the edit profile button
         editProfileButton.setOnClickListener {
-            // You can directly use userId here since it's already fetched
-            val intent = Intent(this, EditProfileActivity::class.java)
+            Log.d("ProfileActivity", "Edit Profile button clicked, user_id: $userId")
+            val intent = Intent(this, EditProfilePage::class.java)
             intent.putExtra("user_id", userId) // Pass the user ID to the EditProfileActivity
             startActivity(intent)
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d("ProfileActivity", "onResume called")
+        // Refresh user profile data when returning to this activity
+        if (userId != -1) {
+            fetchUserProfile(userId)
+        }
+    }
+
     private fun fetchUserProfile(userId: Int) {
+        Log.d("ProfileActivity", "Fetching profile for user ID: $userId")
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                val response = RetrofitClient.instance.getUserProfile(userId)
-                Log.d("ProfileActivity", "Response: ${response.body()}") // Log the response body
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.instance.getUserProfile(userId)
+                }
+
+                Log.d("ProfileActivity", "Response: ${response.isSuccessful}")
+
                 if (response.isSuccessful) {
                     val userProfile = response.body()
                     userProfile?.let { profile ->
@@ -80,39 +98,82 @@ class ProfileActivity : AppCompatActivity() {
                         tvEmail.text = profile.user_email
                         tvContactNumber.text = profile.contact_number
                         tvAddress.text = profile.city
+
+                        Log.d("ProfileActivity", "Profile loaded successfully")
                     } ?: run {
+                        Log.e("ProfileActivity", "Profile data is null")
                         Toast.makeText(this@ProfileActivity, "Profile data is null", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this@ProfileActivity, "Failed to fetch profile: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    // Log the error response
+                    Log.e("ProfileActivity", "Failed to fetch profile: ${response.errorBody()?.string()}")
+                    Toast.makeText(
+                        this@ProfileActivity,
+                        "Failed to fetch profile: ${response.message()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@ProfileActivity, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("ProfileActivity", "An error occurred: ${e.message}", e)
+                Toast.makeText(
+                    this@ProfileActivity,
+                    "An error occurred: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
     private fun logout() {
+        Log.d("ProfileActivity", "Logging out...")
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                val response = RetrofitClient.instance.logout()
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.instance.logout()
+                }
+
                 if (response.isSuccessful) {
                     val logoutResponse = response.body()
                     if (logoutResponse != null) {
+                        Log.d("ProfileActivity", "Logout successful")
+
+                        // Clear shared preferences
+                        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+                        sharedPreferences.edit().clear().apply()
+
                         Toast.makeText(this@ProfileActivity, logoutResponse.success, Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@ProfileActivity, LogInActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        redirectToLogin()
                     } else {
-                        Toast.makeText(this@ProfileActivity, "Logout failed: No response body", Toast.LENGTH_SHORT).show()
+                        Log.e("ProfileActivity", "Logout failed: No response body")
+                        Toast.makeText(
+                            this@ProfileActivity,
+                            "Logout failed: No response body",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else {
-                    Toast.makeText(this@ProfileActivity, "Logout failed: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    Log.e("ProfileActivity", "Logout failed: ${response.errorBody()?.string()}")
+                    Toast.makeText(
+                        this@ProfileActivity,
+                        "Logout failed: ${response.message()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } catch (e: Exception) {
-                Log.e("ProfileActivity", "Logout failed: ${e.message}")
-                Toast.makeText(this@ProfileActivity, "Logout failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("ProfileActivity", "Logout failed: ${e.message}", e)
+                Toast.makeText(
+                    this@ProfileActivity,
+                    "Logout failed: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
+    }
+
+    private fun redirectToLogin() {
+        val intent = Intent(this@ProfileActivity, LogInActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }
