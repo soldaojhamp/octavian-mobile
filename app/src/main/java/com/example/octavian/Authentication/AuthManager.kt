@@ -5,6 +5,9 @@ import android.util.Log
 import com.example.octavian.Api.RetrofitClient
 import com.example.octavian.models.LoginResponse
 import com.example.octavian.models.LoginUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,9 +23,10 @@ class AuthManager(private val sharedPreferences: SharedPreferences) {
         // Create a LoginUser object
         val loginUser = LoginUser(email, password)
 
-        // Make the API call
-        RetrofitClient.instance.userLogin(loginUser).enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+        // Use coroutines to call the suspend function
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val response = RetrofitClient.instance.userLogin(loginUser)
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
                     if (loginResponse != null && loginResponse.success) {
@@ -45,12 +49,11 @@ class AuthManager(private val sharedPreferences: SharedPreferences) {
                     // Handle API error
                     onError("Error: ${response.message()}")
                 }
+            } catch (t: Throwable) {
+                // Handle network or other errors
+                onError("Error: ${t.localizedMessage}")
             }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                // Handle network failure
-                onError("Network error: ${t.localizedMessage}")
-            }
-        })
+        }
     }
 }
+

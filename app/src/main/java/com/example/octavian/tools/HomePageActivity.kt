@@ -14,6 +14,9 @@ import com.example.octavian.R
 import com.example.octavian.adapter.RecyclerViewProductsAdapter
 import com.example.octavian.dataClass.Product
 import com.example.octavian.Api.RetrofitClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,8 +62,9 @@ class HomePageActivity : AppCompatActivity() {
 
 
     private fun fetchProducts() {
-        RetrofitClient.instance.getProducts().enqueue(object : Callback<List<Product>> {
-            override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val response = RetrofitClient.instance.getProducts()
                 if (response.isSuccessful) {
                     response.body()?.let { products ->
                         productList.clear()
@@ -72,12 +76,10 @@ class HomePageActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@HomePageActivity, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
-            }
-
-            override fun onFailure(call: Call<List<Product>>, t: Throwable) {
+            } catch (t: Throwable) {
                 Toast.makeText(this@HomePageActivity, "Error: ${t.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
     }
 
     private fun setupBottomNavigation() {

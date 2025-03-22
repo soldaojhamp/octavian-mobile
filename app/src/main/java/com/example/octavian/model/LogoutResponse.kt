@@ -1,6 +1,5 @@
 package com.example.octavian.model
 
 data class LogoutResponse(
-    val success: Boolean,
-    val message: String
+    val success: String // Matches the "success" key in the JSON response
 )

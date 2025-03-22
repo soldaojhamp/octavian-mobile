@@ -14,6 +14,9 @@ import com.example.octavian.Api.RetrofitClient
 import com.example.octavian.R
 import com.example.octavian.adapter.RecyclerViewCartAdapter
 import com.example.octavian.dataClass.CartItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -96,8 +99,10 @@ class CartPageActivity : AppCompatActivity() {
 }
 
     private fun fetchCartItems(userId: Int) {
-        RetrofitClient.instance.getCartItems(userId).enqueue(object : Callback<List<CartItem>> {
-            override fun onResponse(call: Call<List<CartItem>>, response: Response<List<CartItem>>) {
+        // Using coroutines since getCartItems is a suspend function
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val response = RetrofitClient.instance.getCartItems(userId)
                 if (response.isSuccessful) {
                     response.body()?.let { items ->
                         if (items.isEmpty()) {
@@ -115,18 +120,17 @@ class CartPageActivity : AppCompatActivity() {
                     // Handle error response
                     Toast.makeText(this@CartPageActivity, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
-            }
-
-            override fun onFailure(call: Call<List<CartItem>>, t: Throwable) {
+            } catch (t: Throwable) {
                 Toast.makeText(this@CartPageActivity, "Error: ${t.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
     }
 
     // Function to add an item to the cart
     private fun addToCart(cartItem: CartItem) {
-        RetrofitClient.instance.addToCart(cartItem).enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val response = RetrofitClient.instance.addToCart(cartItem)
                 if (response.isSuccessful) {
                     Toast.makeText(this@CartPageActivity, "Item added to cart", Toast.LENGTH_SHORT).show()
                     // Optionally refresh the cart items
@@ -134,11 +138,14 @@ class CartPageActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@CartPageActivity, "Failed to add item to cart: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
+            } catch (t: Throwable) {
+                Toast.makeText(
+                    this@CartPageActivity,
+                    "Error: ${t.localizedMessage}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(this@CartPageActivity, "Error: ${t.localizedMessage}", Toast.LENGTH_SHORT).show()
-            }
-        })
+        }
     }
 }
+

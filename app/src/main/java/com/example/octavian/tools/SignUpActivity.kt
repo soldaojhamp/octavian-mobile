@@ -12,6 +12,9 @@ import com.example.octavian.Api.RetrofitClient
 import com.example.octavian.models.User
 import com.example.octavian.models.SignUpResponse
 import com.example.octavian.databinding.ActivitySignUpBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,62 +53,62 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun signUp() {
-        val username = binding.usernameTxt.text.toString()
-        val email = binding.emailTxt.text.toString()
-        val password = binding.passwordTxt.text.toString()
-        val confirmPassword = binding.confirmPasswordTxt.text.toString()
+            private fun signUp() {
+                val username = binding.usernameTxt.text.toString()
+                val email = binding.emailTxt.text.toString()
+                val password = binding.passwordTxt.text.toString()
+                val confirmPassword = binding.confirmPasswordTxt.text.toString()
 
-        // Basic validation
-        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-            return
-        }
+                // Basic validation
+                if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                    Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                    return
+                }
 
-        if (password != confirmPassword) {
-            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-            return
-        }
+                if (password != confirmPassword) {
+                    Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                    return
+                }
 
-        // New password validation
-        if (!isValidPassword(password)) {
-            Toast.makeText(this, "Password must contain at least one uppercase letter, one lowercase letter, one special character, and be at least 8 characters long.", Toast.LENGTH_SHORT).show()
-            return
-        }
+                // New password validation
+                if (!isValidPassword(password)) {
+                    Toast.makeText(this, "Password must contain at least one uppercase letter, one lowercase letter, one special character, and be at least 8 characters long.", Toast.LENGTH_SHORT).show()
+                    return
+                }
 
-        // Create a User object
-        val user = User(name = username, email = email, password = password)
+                // Create a User object
+                val user = User(name = username, email = email, password = password)
 
-        Log.d("SignUpActivity", "User  object created: $user")
+                Log.d("SignUpActivity", "User object created: $user")
 
-        // Make the API call to sign up
-        apiService.signup(user).enqueue(object : Callback<SignUpResponse> {
-            override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
-                if (response.isSuccessful) {
-                    val signUpResponse = response.body()
-                    if (signUpResponse != null && signUpResponse.success) {
-                        Toast.makeText(this@SignUpActivity, signUpResponse.message, Toast.LENGTH_SHORT).show()
-                        // Optionally, navigate to the login activity
-                        val intent = Intent(this@SignUpActivity, LogInActivity::class.java)
-                        startActivity(intent)
-                        finish() // Optional: finish the sign-up activity
-                    } else {
-                        val errorMessage = signUpResponse?.message ?: "Unknown error occurred"
-                        Log.e("SignUpActivity", "Registration failed: $errorMessage")
-                        Toast.makeText(this@SignUpActivity, "Registration failed: $errorMessage", Toast.LENGTH_SHORT).show()
+                // Use coroutines to call the suspend function
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        val response = apiService.signup(user)
+                        if (response.isSuccessful) {
+                            val signUpResponse = response.body()
+                            if (signUpResponse != null && signUpResponse.success) {
+                                Toast.makeText(this@SignUpActivity, signUpResponse.message, Toast.LENGTH_SHORT).show()
+                                // Optionally, navigate to the login activity
+                                val intent = Intent(this@SignUpActivity, LogInActivity::class.java)
+                                startActivity(intent)
+                                finish() // Optional: finish the sign-up activity
+                            } else {
+                                val errorMessage = signUpResponse?.message ?: "Unknown error occurred"
+                                Log.e("SignUpActivity", "Registration failed: $errorMessage")
+                                Toast.makeText(this@SignUpActivity, "Registration failed: $errorMessage", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            // Handle different error codes
+                            handleErrorResponse(response)
+                        }
+                    } catch (t: Throwable) {
+                        Log.e("SignUpActivity", "Registration failed: ${t.message}")
+                        Toast.makeText(this@SignUpActivity, "Registration failed: ${t.message}", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    // Handle different error codes
-                    handleErrorResponse(response)
                 }
             }
 
-            override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
-                Log.e("SignUpActivity", "Registration failed: ${t.message}")
-                Toast.makeText(this@SignUpActivity, "Registration failed: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
 
     private fun handleErrorResponse(response: Response<SignUpResponse>) {
         val errorCode = response.code()

@@ -18,7 +18,7 @@ object RetrofitClient {
         .addInterceptor(logging)
         .addInterceptor { chain ->
             val originalRequest = chain.request()
-            val token = "your_access_token" // Retrieve your token from SharedPreferences or another source
+            val token = "AuthManager" // Retrieve your token from SharedPreferences or another source
             val newRequest = originalRequest.newBuilder()
                 .header("Authorization", "Bearer $token") // Add the token to the request header
                 .build()

@@ -60,6 +60,9 @@
         <activity
             android:name=".tools.WelcomePageActivity"
             android:exported="false" />
+        <activity android:name=".tools.EditProfileActivity"
+            android:exported="false"/>
+
         <activity
             android:name=".tools.MainActivity"
             android:exported="true">
@@ -69,6 +72,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
 
 
         <meta-data
