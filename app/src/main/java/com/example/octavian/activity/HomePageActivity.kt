@@ -5,9 +5,11 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.octavian.R
@@ -25,6 +27,13 @@ class HomePageActivity : AppCompatActivity() {
     private lateinit var recyclerViewProductsAdapter: RecyclerViewProductsAdapter
     private var productList = mutableListOf<Product>()
     private var userId: Int = 1 // Default value, will be replaced
+
+    private lateinit var allCategH: LinearLayout
+    private lateinit var tshirtCategH: LinearLayout
+    private lateinit var shortCategH: LinearLayout
+    private lateinit var pantsCategH: LinearLayout
+    private lateinit var shoesCategH: LinearLayout
+    private lateinit var promotionsView: ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,19 +72,46 @@ class HomePageActivity : AppCompatActivity() {
         recyclerViewProductsAdapter = RecyclerViewProductsAdapter(productList, this, userId)
         recyclerView.adapter = recyclerViewProductsAdapter
 
-        // Fetch products from the API
         fetchProducts()
+        // Set up category click listeners
+        setupCategoryClickListeners()
 
         // Set up bottom navigation click listeners
         setupBottomNavigation()
     }
 
+    private fun setupCategoryClickListeners() {
+        findViewById<LinearLayout>(R.id.linearLayoutAll).setOnClickListener {
+            fetchProducts() // Fetch all products
+        }
+
+        findViewById<LinearLayout>(R.id.linearLayoutTshirt).setOnClickListener {
+            fetchProducts("T-shirt") // Fetch T-shirt products
+        }
+
+        findViewById<LinearLayout>(R.id.linearLayoutShort).setOnClickListener {
+            fetchProducts("Shorts") // Fetch Short products
+        }
+
+        findViewById<LinearLayout>(R.id.linearLayoutPants).setOnClickListener {
+            fetchProducts("Pants") // Fetch Pants products
+        }
+
+        findViewById<LinearLayout>(R.id.linearLayoutShoes).setOnClickListener {
+            fetchProducts("Shoes") // Fetch Shoes products
+        }
+    }
 
 
-    private fun fetchProducts() {
+    private fun fetchProducts(category: String? = null) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                val response = RetrofitClient.instance.getProducts()
+                val response = if (category != null) {
+                    RetrofitClient.instance.getProductsByCategory(category) // Create a new API call for category
+                } else {
+                    RetrofitClient.instance.getProducts() // Existing API call for all products
+                }
+
                 if (response.isSuccessful) {
                     response.body()?.let { products ->
                         productList.clear()

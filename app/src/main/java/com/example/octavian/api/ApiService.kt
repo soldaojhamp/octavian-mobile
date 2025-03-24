@@ -50,6 +50,9 @@ interface ApiService {
     @GET("app_products.php")
     suspend fun getProducts(): Response<List<Product>>
 
+    @GET("app_products.php")
+    suspend fun getProductsByCategory(@Query("category") category: String): Response<List<Product>>
+
     @Headers("Cache-Control: no-cache")
     @GET("get_cart_items.php")
     suspend fun getCartItems(@Query("user_id") userId: Int): Response<List<CartItem>>
