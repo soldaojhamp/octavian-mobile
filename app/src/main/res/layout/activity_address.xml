@@ -8,7 +8,7 @@
     android:background="#FFF7F7"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".tools.AddressActivity">
+    tools:context=".activity.AddressActivity">
 
     <ImageView
         android:layout_width="24dp"

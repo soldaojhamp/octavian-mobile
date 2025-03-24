@@ -4,6 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29"/>
+
     <meta-data
         android:name="com.google.android.gms.version"
         android:value="@integer/google_play_services_version" />
@@ -20,49 +25,49 @@
         android:theme="@style/Theme.Octavian"
         tools:targetApi="31">
         <activity
-            android:name=".tools.EditProfilePage"
+            android:name=".activity.EditProfilePage"
             android:exported="false" />
         <activity
-            android:name=".tools.ForgotSecActivity"
+            android:name=".activity.ForgotSecActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.ChangePassActivity"
+            android:name=".activity.ChangePassActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.AddressActivity"
+            android:name=".activity.AddressActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.ProfileActivity"
+            android:name=".activity.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.CheckOutActivity"
+            android:name=".activity.CheckOutActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.ForgotPassActivity"
+            android:name=".activity.ForgotPassActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.EditCartActivty"
+            android:name=".activity.EditCartActivty"
             android:exported="false" />
         <activity
-            android:name=".tools.CartPageActivity"
+            android:name=".activity.CartPageActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.OrdersActivity"
+            android:name=".activity.OrdersActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.HomePageActivity"
+            android:name=".activity.HomePageActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.LogInActivity"
+            android:name=".activity.LogInActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.SignUpActivity"
+            android:name=".activity.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.WelcomePageActivity"
+            android:name=".activity.WelcomePageActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

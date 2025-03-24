@@ -1,7 +1,9 @@
-package com.example.octavian.tools
+package com.example.octavian.activity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.Toast
 
 
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +19,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private val mainScope = MainScope() // Coroutine scope for the main thread
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

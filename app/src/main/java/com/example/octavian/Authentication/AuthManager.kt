@@ -1,4 +1,4 @@
-package com.example.octavian.tools
+package com.example.octavian.activity
 
 import android.content.SharedPreferences
 import android.util.Log
@@ -8,9 +8,6 @@ import com.example.octavian.models.LoginUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class AuthManager(private val sharedPreferences: SharedPreferences) {
 
@@ -36,8 +33,7 @@ class AuthManager(private val sharedPreferences: SharedPreferences) {
                             val editor = sharedPreferences.edit()
                             editor.putInt("user_id", userId)
                             editor.apply()
-                            Log.d("AuthManager", "user_id saved: $userId")
-                        }
+                            Log.d("AuthManager", "user_id saved: $userId")        }
 
                         // Call the success callback
                         onSuccess(loginResponse)

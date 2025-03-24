@@ -26,10 +26,10 @@
         android:id="@+id/ivProfileImageUrl"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/sean"
         android:scaleType="centerCrop"
         android:layout_gravity="center"
-        android:layout_marginTop="-50dp"/>
+        android:layout_marginTop="-50dp"
+        android:background="@drawable/circle_background"/>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,17 +1,18 @@
-package com.example.octavian.tools
+package com.example.octavian.activity
 
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.octavian.Api.RetrofitClient
 import com.example.octavian.R
-import com.example.octavian.model.UserProfileResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +25,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var tvEmail: TextView
     private lateinit var tvContactNumber: TextView
     private lateinit var tvAddress: TextView
+    private lateinit var profileImageView: ImageView
     private var userId: Int = -1 // Default value, will be replaced
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +42,7 @@ class ProfileActivity : AppCompatActivity() {
         tvEmail = findViewById(R.id.tvEmail)
         tvContactNumber = findViewById(R.id.tvContactNumber)
         tvAddress = findViewById(R.id.tvAddress)
+        profileImageView = findViewById(R.id.ivProfileImage)
 
         // Fetch user data
         val sharedPreferences: SharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
@@ -98,6 +101,26 @@ class ProfileActivity : AppCompatActivity() {
                         tvEmail.text = profile.user_email
                         tvContactNumber.text = profile.contact_number
                         tvAddress.text = profile.city
+
+                        // Load profile image if available
+                        profile.user_profile_url?.let { url ->
+                            if (url.isNotEmpty()) {
+                                Glide.with(this@ProfileActivity)
+                                    .load(url)
+                                    .placeholder(R.drawable.logowhitebg___copy) // Use your default placeholder
+                                    .error(R.drawable.logowhitebg___copy) // Use your error placeholder
+                                    .circleCrop() // Optional: makes the image circular
+                                    .into(profileImageView)
+
+                                Log.d("ProfileActivity", "Loading profile image: $url")
+                            } else {
+                                // Load default image if URL is empty
+                                profileImageView.setImageResource(R.drawable.logowhitebg___copy)
+                            }
+                        } ?: run {
+                            // Load default image if URL is null
+                            profileImageView.setImageResource(R.drawable.logowhitebg___copy)
+                        }
 
                         Log.d("ProfileActivity", "Profile loaded successfully")
                     } ?: run {

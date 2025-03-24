@@ -22,8 +22,7 @@ import com.bumptech.glide.request.target.Target
 import com.example.octavian.R
 import com.example.octavian.dataClass.CartItem
 import com.example.octavian.dataClass.Product
-import com.example.octavian.global.GlobalVariables.CARTLIST
-import com.example.octavian.tools.ClickListenerInit
+import com.example.octavian.activity.ClickListenerInit
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONObject
 
@@ -49,15 +48,19 @@ class RecyclerViewProductsAdapter(
 
         // Set click listener for "Add to Cart" button
         holder.tvAddcart.setOnClickListener {
+            // Create CartItem properly according to its constructor
             val cartItem = CartItem(
-                user_id = item.user_id,
-                quantity = item.quantity,
+                userId = userId,
+                user_id = userId,
                 product_id = item.product_id,
-                image_path = item.image_path ?: "",
-                item_title = item.item_title ?: "Unknown Product",
+                quantity = 1,
                 items = 1,
-                price = item.price ?: 0.0,
-                color = item.color ?: "N/A"
+                price = item.price,
+                pricePerItem = item.price.toInt(),
+                image_path = item.image_path,
+                item_title = item.item_title,
+                color = item.color,
+                isSelected = false // Default not selected
             )
 
             // Send a request to the PHP API to add the product to the cart
@@ -72,7 +75,7 @@ class RecyclerViewProductsAdapter(
         val jsonBody = JSONObject().apply {
             put("user_id", userId)
             put("product_id", cartItem.product_id)
-            put("quantity", cartItem.items)
+            put("quantity", cartItem.quantity)
             put("price", cartItem.price)
             put("image_path", cartItem.image_path)
             put("item_title", cartItem.item_title)
@@ -113,7 +116,7 @@ class RecyclerViewProductsAdapter(
         fun bind(product: Product) {
             // Set product details
             tvProductName.text = product.item_title ?: "Unknown Product"
-            tvPrice.text = "${product.price ?: 0.0}"
+            tvPrice.text = "${product.price}"
             tvBrand.text = product.brand ?: "Unknown Brand"
             tvColor.text = product.color ?: "N/A"
             tvSize.text = product.size ?: "N/A"

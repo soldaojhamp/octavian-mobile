@@ -9,13 +9,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.octavian.R
 import com.example.octavian.dataClass.CartItem
 
 class RecyclerViewCartAdapter(
     private val cartList: MutableList<CartItem>,
-    private val onItemChecked: (CartItem, Boolean) -> Unit, // Callback for item selection
-    private val onAddToCartClick: (CartItem) -> Unit // Callback for add to cart action
+    private val onItemChecked: (CartItem, Boolean) -> Unit,
+    private val onAddToCartClick: (CartItem) -> Unit
 ) : RecyclerView.Adapter<RecyclerViewCartAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -25,11 +26,13 @@ class RecyclerViewCartAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = cartList[position]
-        holder.tvProductName.text = item.item_title
-        holder.tvColor.text = item.color
+
+        // Set text values safely using elvis operator
+        holder.tvProductName.text = item.item_title ?: "No Title"
+        holder.tvColor.text = item.color ?: "No Color"
         holder.tvPrice.text = item.price.toString()
 
-        // Log the image_path for debugging
+        // Log the image path for debugging
         Log.d("RecyclerViewCartAdapter", "Image path: ${item.image_path}")
 
         // Load image using Glide
@@ -37,8 +40,7 @@ class RecyclerViewCartAdapter(
             Log.d("RecyclerViewCartAdapter", "Loading image with Glide: ${item.image_path}")
             Glide.with(holder.itemView.context)
                 .load(item.image_path)
-                .placeholder(R.drawable.placeholder_image) // Placeholder while loading
-                .error(R.drawable.error_image) // Error image if loading fails
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.ivCartImage)
         } else {
             Log.d("RecyclerViewCartAdapter", "Image path is null or empty, using placeholder")

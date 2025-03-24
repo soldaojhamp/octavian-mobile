@@ -6,5 +6,6 @@ data class UpdateProfileRequest(
     val user_name: String,
     val user_email: String,
     val contact_number: String,
-    val city: String
+    val city: String,
+    val user_profile_url: String?
 )

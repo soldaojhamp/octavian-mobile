@@ -1,10 +1,10 @@
-package com.example.octavian.tools
+package com.example.octavian.activity
 
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +17,6 @@ import com.example.octavian.Api.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HomePageActivity : AppCompatActivity() {
 
@@ -33,14 +30,28 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
+        // Initialize views
         userNameTextView = findViewById(R.id.textView12)
+        Log.d("HomePageActivity", "Activity created")
 
-
-        // Retrieve user ID from SharedPreferences
+        // Initialize SharedPreferences
         val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-        userId = sharedPreferences.getInt("user_id", -1) // -1 is the default value if not found
-        val userName = sharedPreferences.getString("user_name", "User") // Default to "User " if not found
 
+        //get user data
+        userId = sharedPreferences.getInt("user_id", -1)
+        val userName = when {
+            sharedPreferences.contains("user_name") -> sharedPreferences.getString("user_name", "")
+            else -> "Guest"
+        }
+
+        Log.d("HomePage", "User ID: $userId, Name: $userName")
+
+        // Check if user is logged in
+        if (userId == -1) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
 
         userNameTextView.text = userName
 

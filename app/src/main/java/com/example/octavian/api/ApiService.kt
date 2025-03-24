@@ -10,23 +10,34 @@ import com.example.octavian.models.SignUpResponse
 import com.example.octavian.models.User
 import com.example.octavian.models.LoginResponse
 import com.example.octavian.models.LoginUser
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
-
-
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
-import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Multipart
 import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.Part
 import retrofit2.http.Query
 
-
 interface ApiService {
+
+    @FormUrlEncoded
+    @POST("deleteCartItems.php")
+    suspend fun deleteCartItems(
+        @Field("user_id") userId: Int,
+        @Field("product_ids") productIds: String
+    ): Response<Map<String, Any>>
+
+
+    @POST("checkout.php")
+    @Headers("Content-Type: application/json")
+    suspend fun placeOrder(@Body orderData: RequestBody): Response<ResponseBody>
+
 
     @Headers("Content-Type: application/json")
     @POST("app_signup.php")
@@ -55,10 +66,21 @@ interface ApiService {
         @Query("user_id") userId: Int // Use @Query instead of @Path
     ): Response<UserProfileResponse>
 
-
     @Headers("Content-Type: application/json")
     @POST("update_userprofile.php")
     suspend fun updateUserProfile(
-    @Body request: UpdateProfileRequest // Accept the request object
+        @Body request: UpdateProfileRequest // Accept the request object
     ): Response<UpdateProfileResponse>
+
+    @Multipart
+    @POST("update_userprofile.php")
+    suspend fun uploadImage(@Part file: MultipartBody.Part): Response<ImageUploadResponse>
 }
+
+
+
+data class ImageUploadResponse(
+    val success: Boolean,
+    val url: String? = null,
+    val message: String? = null
+)

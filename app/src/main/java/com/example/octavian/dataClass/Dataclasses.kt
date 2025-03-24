@@ -38,43 +38,48 @@ data class Product(
 //    var isSelected: Boolean = false
 //)
 
-
 data class CartItem(
-    var userId: Int? = null,
-    val user_id: Int,
-    val product_id: Int,
-    val quantity: Int,
-    val items: Int,
-    val price: Double,
-    val image_path: String?,
-    val item_title: String,
-    val color: String,
+    val id: Int = 0,
+    val userId: Int? = null,
+    val user_id: Int = 0,
+    val product_id: Int = 0,
+    val quantity: Int = 0,
+    val items: Int = 0,
+    val price: Double = 0.0,
+    val pricePerItem: Int = 0,
+    val image_path: String? = null,
+    val item_title: String = "",
+    val color: String = "",
     var isSelected: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readInt(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readDouble(),
+        parcel.readInt(),
         parcel.readString(),
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readByte() != 0.toByte() // Convert byte to Boolean
+        parcel.readInt() == 1
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
         parcel.writeValue(userId)
         parcel.writeInt(user_id)
         parcel.writeInt(product_id)
         parcel.writeInt(quantity)
         parcel.writeInt(items)
         parcel.writeDouble(price)
+        parcel.writeInt(pricePerItem)
         parcel.writeString(image_path)
         parcel.writeString(item_title)
         parcel.writeString(color)
-        parcel.writeByte(if (isSelected) 1 else 0) // Convert Boolean to byte
+        parcel.writeInt(if (isSelected) 1 else 0)
     }
 
     override fun describeContents(): Int {
@@ -90,6 +95,7 @@ data class CartItem(
             return arrayOfNulls(size)
         }
     }
+
     fun totalPrice(): Double {
         return items * price
     }
@@ -101,6 +107,14 @@ data class CartItem(
         val status: String,
         val image_path: String
     )
+
+
+    // CheckoutItem class nested within CartItem
+    data class CheckoutItem(
+        val item_title: String = "",
+        val price: Double = 0.0,
+        val color: String = "",
+        val pricePerItem: Int = 0,
+        val image_path: String? = null
+    )
 }
-
-

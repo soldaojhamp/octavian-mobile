@@ -1,4 +1,4 @@
-package com.example.octavian.tools
+package com.example.octavian.activity
 
 import android.content.Intent
 import android.os.Bundle

@@ -1,5 +1,5 @@
 // LogInActivity.kt
-package com.example.octavian.tools
+package com.example.octavian.activity
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,9 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.octavian.Api.RetrofitClient
-import com.example.octavian.models.LoginResponse
-import com.example.octavian.models.LoginUser
 import com.example.octavian.R
 
 class LogInActivity : AppCompatActivity() {
@@ -46,8 +43,8 @@ class LogInActivity : AppCompatActivity() {
     }
 
     private fun login() {
-        val email = emailEditText.text.toString().trim()
-        val password = passwordEditText.text.toString().trim()
+        val email = emailEditText.text.toString()
+        val password = passwordEditText.text.toString()
 
         // Validate input
         if (email.isEmpty() || password.isEmpty()) {

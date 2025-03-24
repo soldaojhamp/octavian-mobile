@@ -1,34 +1,33 @@
-package com.example.octavian.tools
+package com.example.octavian.activity
 
 import android.content.Intent
-import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.example.octavian.R
+import com.example.octavian.databinding.ActivityEditProfilePageBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import com.example.octavian.Api.ApiService
-import com.example.octavian.R
 import com.example.octavian.model.UpdateProfileRequest
-import com.example.octavian.model.UserProfileResponse
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 class EditProfilePage : AppCompatActivity() {
 
-    private lateinit var etFullName: EditText
-    private lateinit var etUsername: EditText
-    private lateinit var etEmail: EditText
-    private lateinit var etContactNumber: EditText
-    private lateinit var etAddress: EditText
-    private lateinit var btnSave: Button
+    private lateinit var binding: ActivityEditProfilePageBinding
     private var userId: Int = -1
+    private var selectedImageUri: Uri? = null
+    private val PICK_IMAGE_REQUEST = 1
 
     private val apiService: ApiService by lazy {
         Retrofit.Builder()
@@ -40,17 +39,10 @@ class EditProfilePage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_profile_page)
+        binding = ActivityEditProfilePageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         Log.d("EditProfilePage", "Activity created")
-
-        // Initialize views
-        etFullName = findViewById(R.id.etFullName)
-        etUsername = findViewById(R.id.etUsername)
-        etEmail = findViewById(R.id.etEmail)
-        etContactNumber = findViewById(R.id.etContactNumber)
-        etAddress = findViewById(R.id.etAddress)
-        btnSave = findViewById(R.id.btnSave)
 
         // Get user ID from both Intent and SharedPreferences
         userId = intent.getIntExtra("user_id", -1)
@@ -72,17 +64,23 @@ class EditProfilePage : AppCompatActivity() {
         // Fetch user profile
         fetchUserProfile(userId)
 
-        btnSave.setOnClickListener {
+        // Set click listener for the profile image
+        binding.ivProfileImageUrl.setOnClickListener {
+            openGallery()
+        }
+
+        // Save button click listener
+        binding.btnSave.setOnClickListener {
             // Validate input fields
             if (!validateInputs()) {
                 return@setOnClickListener
             }
 
-            val user_fullname = etFullName.text.toString().trim()
-            val user_name = etUsername.text.toString().trim()
-            val user_email = etEmail.text.toString().trim()
-            val contact_number = etContactNumber.text.toString().trim()
-            val city = etAddress.text.toString().trim()
+            val user_fullname = binding.etFullName.text.toString().trim()
+            val user_name = binding.etUsername.text.toString().trim()
+            val user_email = binding.etEmail.text.toString().trim()
+            val contact_number = binding.etContactNumber.text.toString().trim()
+            val city = binding.etAddress.text.toString().trim()
 
             Log.d("EditProfileActivity", "Updating profile for user ID: $userId")
 
@@ -98,12 +96,27 @@ class EditProfilePage : AppCompatActivity() {
         }
     }
 
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
+            selectedImageUri = data.data
+            binding.ivProfileImageUrl.setImageURI(selectedImageUri)
+        }
+    }
+
     private fun validateInputs(): Boolean {
-        val user_fullname = etFullName.text.toString().trim()
-        val user_name = etUsername.text.toString().trim()
-        val user_email = etEmail.text.toString().trim()
-        val contact_number = etContactNumber.text.toString().trim()
-        val city = etAddress.text.toString().trim()
+        val user_fullname = binding.etFullName.text.toString().trim()
+        val user_name = binding.etUsername.text.toString().trim()
+        val user_email = binding.etEmail.text.toString().trim()
+        val contact_number = binding.etContactNumber.text.toString().trim()
+        val city = binding.etAddress.text.toString().trim()
 
         // Check for empty fields
         if (user_fullname.isEmpty() || user_name.isEmpty() || user_email.isEmpty() ||
@@ -149,11 +162,19 @@ class EditProfilePage : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val userProfile = response.body()
                     userProfile?.let { profile ->
-                        etFullName.setText(profile.user_fullname ?: "")
-                        etUsername.setText(profile.user_name ?: "")
-                        etEmail.setText(profile.user_email ?: "")
-                        etContactNumber.setText(profile.contact_number ?: "")
-                        etAddress.setText(profile.city ?: "")
+                        binding.etFullName.setText(profile.user_fullname ?: "")
+                        binding.etUsername.setText(profile.user_name ?: "")
+                        binding.etEmail.setText(profile.user_email ?: "")
+                        binding.etContactNumber.setText(profile.contact_number ?: "")
+                        binding.etAddress.setText(profile.city ?: "")
+
+                        // Load profile image if available
+                        profile.user_profile_url?.let { url ->
+                            Glide.with(this@EditProfilePage)
+                                .load(url)
+                                .placeholder(R.drawable.logowhitebg___copy)
+                                .into(binding.ivProfileImageUrl)
+                        }
 
                         Log.d("EditProfileActivity", "Profile loaded successfully")
                     } ?: run {
@@ -195,8 +216,13 @@ class EditProfilePage : AppCompatActivity() {
     ) {
         Log.d("EditProfileActivity", "Updating profile...")
         CoroutineScope(Dispatchers.Main).launch {
-            btnSave.isEnabled = false // Prevent multiple clicks
+            binding.btnSave.isEnabled = false // Prevent multiple clicks
             try {
+                // Upload image if selected
+                val userProfileUrl = selectedImageUri?.let { uri ->
+                    uploadImage(uri)
+                }
+
                 // Create an instance of UpdateProfileRequest
                 val request = UpdateProfileRequest(
                     user_id = user_id,
@@ -204,7 +230,8 @@ class EditProfilePage : AppCompatActivity() {
                     user_name = user_name,
                     user_email = user_email,
                     contact_number = contact_number,
-                    city = city
+                    city = city,
+                    user_profile_url = userProfileUrl
                 )
 
                 Log.d("EditProfileActivity", "Sending update request: $request")
@@ -228,7 +255,7 @@ class EditProfilePage : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        // Navigate back to ProfileActivity
+                        // Navigate back to ProfileActivity and refresh it
                         navigateBack()
                     } else {
                         Log.e("EditProfileActivity", "Update failed: ${updateResponse?.message}")
@@ -255,13 +282,42 @@ class EditProfilePage : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } finally {
-                btnSave.isEnabled = true // Re-enable the button
+                binding.btnSave.isEnabled = true // Re-enable the button
+            }
+        }
+    }
+
+    private suspend fun uploadImage(imageUri: Uri): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val inputStream = contentResolver.openInputStream(imageUri)
+                val file = File(cacheDir, "temp_image.jpg")
+                inputStream?.use { input ->
+                    file.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+
+                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+                val response = apiService.uploadImage(body)
+                if (response.isSuccessful && response.body()?.success == true) {
+                    response.body()?.url
+                } else {
+                    Log.e("EditProfileActivity", "Image upload failed: ${response.errorBody()?.string()}")
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e("EditProfileActivity", "Error uploading image: ${e.message}", e)
+                null
             }
         }
     }
 
     private fun navigateBack() {
         val intent = Intent(this@EditProfilePage, ProfileActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
         finish()
     }

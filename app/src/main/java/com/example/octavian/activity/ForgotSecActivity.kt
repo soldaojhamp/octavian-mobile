@@ -1,15 +1,15 @@
-package com.example.octavian.tools
+package com.example.octavian.activity
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.octavian.R
 
-class ForgotPassActivity : AppCompatActivity() {
+class ForgotSecActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_forgot_pass)
+        setContentView(R.layout.activity_forgot_sec)
 
     }
 }
