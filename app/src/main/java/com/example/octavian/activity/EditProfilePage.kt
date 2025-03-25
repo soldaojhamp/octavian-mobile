@@ -172,7 +172,7 @@ class EditProfilePage : AppCompatActivity() {
                         profile.user_profile_url?.let { url ->
                             Glide.with(this@EditProfilePage)
                                 .load(url)
-                                .placeholder(R.drawable.logowhitebg___copy)
+                                .placeholder(R.drawable.default_pfp)
                                 .into(binding.ivProfileImageUrl)
                         }
 

@@ -25,21 +25,18 @@ class RecyclerViewCheckoutAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = checkoutList[position]
         Log.d("CartDebug", "Item at $position: $item")
+
         holder.tvItemTitle.text = item.item_title
         holder.tvPrice.text = "${item.price}"
         holder.tvColor.text = item.color
 
-        // Load image using Glide
-        if (!item.image_path.isNullOrEmpty()) {
-            Log.d("RecyclerViewCartAdapter", "Loading image with Glide: ${item.image_path}")
-            Glide.with(holder.itemView.context)
-                .load(item.image_path)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.imageView15)
-        } else {
-            Log.d("RecyclerViewCartAdapter", "Image path is null or empty, using placeholder")
-            holder.imageView15.setImageResource(R.drawable.placeholder_image)
-        }
+        // Load the image using Glide
+        Glide.with(holder.itemView.context)
+            .load(item.image_path)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .placeholder(R.drawable.placeholder_image)
+            .error(R.drawable.error_image)
+            .into(holder.imageView15)
     }
 
     override fun getItemCount(): Int {

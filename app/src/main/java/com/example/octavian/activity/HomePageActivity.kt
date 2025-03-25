@@ -2,6 +2,7 @@ package com.example.octavian.activity
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -10,12 +11,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.octavian.R
 import com.example.octavian.adapter.RecyclerViewProductsAdapter
 import com.example.octavian.dataClass.Product
 import com.example.octavian.Api.RetrofitClient
+import com.example.octavian.dataClass.CartItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,6 +46,13 @@ class HomePageActivity : AppCompatActivity() {
         userNameTextView = findViewById(R.id.textView12)
         Log.d("HomePageActivity", "Activity created")
 
+        // Initialize category views
+        allCategH = findViewById(R.id.linearLayoutAll)
+        tshirtCategH = findViewById(R.id.linearLayoutTshirt)
+        shortCategH = findViewById(R.id.linearLayoutShort)
+        pantsCategH = findViewById(R.id.linearLayoutPants)
+        shoesCategH = findViewById(R.id.linearLayoutShoes)
+
         // Initialize SharedPreferences
         val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
 
@@ -68,7 +78,7 @@ class HomePageActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.rvProductLists)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-        // Initialize the adapter with productList, context, and userId
+        // Initialize the adapter with productList, context, userId, and cartList
         recyclerViewProductsAdapter = RecyclerViewProductsAdapter(productList, this, userId)
         recyclerView.adapter = recyclerViewProductsAdapter
 
@@ -81,35 +91,39 @@ class HomePageActivity : AppCompatActivity() {
     }
 
     private fun setupCategoryClickListeners() {
-        findViewById<LinearLayout>(R.id.linearLayoutAll).setOnClickListener {
+        allCategH.setOnClickListener {
             fetchProducts() // Fetch all products
+            highlightCategory(allCategH)
         }
 
-        findViewById<LinearLayout>(R.id.linearLayoutTshirt).setOnClickListener {
+        tshirtCategH.setOnClickListener {
             fetchProducts("T-shirt") // Fetch T-shirt products
+            highlightCategory(tshirtCategH)
         }
 
-        findViewById<LinearLayout>(R.id.linearLayoutShort).setOnClickListener {
+        shortCategH.setOnClickListener {
             fetchProducts("Shorts") // Fetch Short products
+            highlightCategory(shortCategH)
         }
 
-        findViewById<LinearLayout>(R.id.linearLayoutPants).setOnClickListener {
+        pantsCategH.setOnClickListener {
             fetchProducts("Pants") // Fetch Pants products
+            highlightCategory(pantsCategH)
         }
 
-        findViewById<LinearLayout>(R.id.linearLayoutShoes).setOnClickListener {
+        shoesCategH.setOnClickListener {
             fetchProducts("Shoes") // Fetch Shoes products
+            highlightCategory(shoesCategH)
         }
     }
-
 
     private fun fetchProducts(category: String? = null) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val response = if (category != null) {
-                    RetrofitClient.instance.getProductsByCategory(category) // Create a new API call for category
+                    RetrofitClient.instance.getProductsByCategory(category)
                 } else {
-                    RetrofitClient.instance.getProducts() // Existing API call for all products
+                    RetrofitClient.instance.getProducts()
                 }
 
                 if (response.isSuccessful) {
@@ -145,5 +159,20 @@ class HomePageActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.imageView8).setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
+    }
+
+    private fun highlightCategory(selected: LinearLayout) {
+        val redBg: Drawable? = ContextCompat.getDrawable(this, R.drawable.categred)
+        val grayBg: Drawable? = ContextCompat.getDrawable(this, R.drawable.categgray)
+
+        // Reset all backgrounds to gray
+        allCategH.background = grayBg
+        tshirtCategH.background = grayBg
+        shortCategH.background = grayBg
+        pantsCategH.background = grayBg
+        shoesCategH.background = grayBg
+
+        // Set selected background to red
+        selected.background = redBg
     }
 }

@@ -107,19 +107,19 @@ class ProfileActivity : AppCompatActivity() {
                             if (url.isNotEmpty()) {
                                 Glide.with(this@ProfileActivity)
                                     .load(url)
-                                    .placeholder(R.drawable.logowhitebg___copy) // Use your default placeholder
-                                    .error(R.drawable.logowhitebg___copy) // Use your error placeholder
+                                    .placeholder(R.drawable.default_pfp) // Use your default placeholder
+                                    .error(R.drawable.default_pfp) // Use your error placeholder
                                     .circleCrop() // Optional: makes the image circular
                                     .into(profileImageView)
 
                                 Log.d("ProfileActivity", "Loading profile image: $url")
                             } else {
                                 // Load default image if URL is empty
-                                profileImageView.setImageResource(R.drawable.logowhitebg___copy)
+                                profileImageView.setImageResource(R.drawable.default_pfp)
                             }
                         } ?: run {
                             // Load default image if URL is null
-                            profileImageView.setImageResource(R.drawable.logowhitebg___copy)
+                            profileImageView.setImageResource(R.drawable.default_pfp)
                         }
 
                         Log.d("ProfileActivity", "Profile loaded successfully")

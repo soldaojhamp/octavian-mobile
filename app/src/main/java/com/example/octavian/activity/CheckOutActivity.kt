@@ -112,16 +112,6 @@ class CheckOutActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 // Prepare order data
-                val orderItems = JSONArray().apply {
-                    selectedItems?.forEach { item ->
-                        put(JSONObject().apply {
-                            put("product_id", item.product_id)
-                            put("quantity", item.quantity)
-                            put("price", item.price)
-                        })
-                    }
-                }
-
                 val orderData = JSONObject().apply {
                     put("user_id", userId)
                     put("items", JSONArray().apply {
@@ -140,7 +130,6 @@ class CheckOutActivity : AppCompatActivity() {
 
                 // Make API call
                 val response = RetrofitClient.instance.placeOrder(requestBody)
-                // ... handle response ...
                 val responseBody = response.body()
 
                 withContext(Dispatchers.Main) {

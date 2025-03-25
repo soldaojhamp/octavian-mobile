@@ -51,6 +51,12 @@ class CartPageActivity : AppCompatActivity() {
             return
         }
 
+        recyclerViewCartAdapter = RecyclerViewCartAdapter(
+            cartList,
+            { item, isChecked -> item.isSelected = isChecked },
+            { cartItem -> addToCart(cartItem) }
+        )
+
         initViews()
         fetchCartItems()
     }
@@ -134,6 +140,18 @@ class CartPageActivity : AppCompatActivity() {
     }
 
     private fun addToCart(cartItem: CartItem) {
+        // Check if the item is sold out
+        if (!cartItem.isAvailable) {
+            Toast.makeText(this, "Item is sold out.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Check if the item is already in the cart
+        if (cartList.any { it.product_id == cartItem.product_id }) {
+            Toast.makeText(this, "Item is already in your cart.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitClient.instance.addToCart(cartItem)
@@ -145,7 +163,7 @@ class CartPageActivity : AppCompatActivity() {
                             "Item added to cart",
                             Toast.LENGTH_SHORT
                         ).show()
-                        fetchCartItems()
+                        fetchCartItems() // Refresh cart items after adding
                     } else {
                         Toast.makeText(
                             this@CartPageActivity,

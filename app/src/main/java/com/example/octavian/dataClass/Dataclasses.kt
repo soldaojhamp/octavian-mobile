@@ -16,6 +16,7 @@ data class Product(
     val discounted_price: Double,
     val image_path: String,
     val color: String,
+    var isSoldOut: Boolean = false // Indicates if the product is sold out
 ) {
 
 }
@@ -50,7 +51,8 @@ data class CartItem(
     val image_path: String? = null,
     val item_title: String = "",
     val color: String = "",
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
+    var isAvailable: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -101,13 +103,58 @@ data class CartItem(
     }
     // Data class for OrderItem
     data class OrderItem(
-        val item_title: String,
-        val pricePerItem: Double,
-        val color: String,
-        val status: String,
-        val image_path: String
-    )
+        val id: Int = 0,
+        val userId: Int? = null,
+        val user_id: Int,
+        val order_id: Int,        // Unique identifier for the order
+        val product_id: Int,      // Unique identifier for the product
+        val quantity: Int,        // Quantity of the product ordered
+        val status: String,       // Status of the order (e.g., "Pending", "Completed")
+        val item_title: String,    // Title of the product
+        val pricePerItem: Double, // Price per item
+        val color: String,        // Color of the product
+        val image_path: String     // URL or path to the product image
+    ) : Parcelable {
+        constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readValue(Int::class.java.classLoader) as? Int,
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readString() ?: "",
+            parcel.readString() ?: "",
+            parcel.readDouble(),
+            parcel.readString() ?: "",
+            parcel.readString() ?: ""
+        )
 
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeInt(user_id)
+            parcel.writeInt(order_id)
+            parcel.writeInt(product_id)
+            parcel.writeInt(quantity)
+            parcel.writeString(status)
+            parcel.writeString(item_title)
+            parcel.writeDouble(pricePerItem)
+            parcel.writeString(color)
+            parcel.writeString(image_path)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<OrderItem> {
+            override fun createFromParcel(parcel: Parcel): OrderItem {
+                return OrderItem(parcel)
+            }
+
+            override fun newArray(size: Int): Array<OrderItem?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
 
     // CheckoutItem class nested within CartItem
     data class CheckoutItem(

@@ -1,6 +1,7 @@
 package com.example.octavian.adapter
 
 import android.content.Context
+import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -32,8 +34,6 @@ class RecyclerViewProductsAdapter(
     private val userId: Int
 ) : RecyclerView.Adapter<RecyclerViewProductsAdapter.MyViewHolder>() {
 
-    private val listener = ClickListenerInit()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.layout_product_lists, parent, false)
@@ -46,25 +46,41 @@ class RecyclerViewProductsAdapter(
         // Bind product details to the ViewHolder
         holder.bind(item)
 
-        // Set click listener for "Add to Cart" button
-        holder.tvAddcart.setOnClickListener {
-            // Create CartItem properly according to its constructor
-            val cartItem = CartItem(
-                userId = userId,
-                user_id = userId,
-                product_id = item.product_id,
-                quantity = 1,
-                items = 1,
-                price = item.price,
-                pricePerItem = item.price.toInt(),
-                image_path = item.image_path,
-                item_title = item.item_title,
-                color = item.color,
-                isSelected = false // Default not selected
-            )
+        // Check if the product is sold out
+        if (item.isSoldOut) {
+            holder.tvSoldOut.visibility = View.VISIBLE
+            holder.tvAddcart.visibility = View.GONE // Hide the add to cart button
+        } else {
+            holder.tvSoldOut.visibility = View.GONE
+            holder.tvAddcart.visibility = View.VISIBLE // Show the add to cart button
 
-            // Send a request to the PHP API to add the product to the cart
-            addToCart(holder, cartItem, userId)
+            // Set click listener for "Add to Cart" button
+            holder.tvAddcart.setOnClickListener {
+                // Create CartItem properly according to its constructor
+                val cartItem = CartItem(
+                    userId = userId,
+                    user_id = userId,
+                    product_id = item.product_id,
+                    quantity = 1,
+                    items = 1,
+                    price = item.price,
+                    pricePerItem = item.price.toInt(),
+                    image_path = item.image_path,
+                    item_title = item.item_title,
+                    color = item.color,
+                    isSelected = false, // Default not selected
+                    isAvailable = !item.isSoldOut // Set availability based on sold out status
+                )
+
+                // Check if the item is sold out before adding to cart
+                if (!cartItem.isAvailable) {
+                    Toast.makeText(context, "Item is sold out.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                // Send a request to the PHP API to add the product to the cart
+                addToCart(holder, cartItem, userId)
+            }
         }
     }
 
@@ -112,47 +128,24 @@ class RecyclerViewProductsAdapter(
         val tvProductName: TextView = itemView.findViewById(R.id.tvProductName)
         val ivProductImage: ImageView = itemView.findViewById(R.id.ivProductImage)
         val cardView: CardView = itemView.findViewById(R.id.cardView)
+        val tvSoldOut: TextView = itemView.findViewById(R.id.tvSoldOut) // Reference to the SOLD OUT TextView
 
         fun bind(product: Product) {
             // Set product details
             tvProductName.text = product.item_title ?: "Unknown Product"
-            tvPrice.text = "${product.price}"
             tvBrand.text = product.brand ?: "Unknown Brand"
             tvColor.text = product.color ?: "N/A"
             tvSize.text = product.size ?: "N/A"
+            tvPrice.text = "%.2f".format(product.price)
 
             // Load product image using Glide
             product.image_path?.let { imageUrl ->
-                Log.d("Glide", "Loading image from URL: $imageUrl") // Debugging
                 Glide.with(itemView.context)
-                    .load(imageUrl) // Use the image URL from the database
-                    .placeholder(R.drawable.product_image) // Placeholder while loading
-                    .error(R.drawable.error_image) // Error image if loading fails
-                    .transition(DrawableTransitionOptions.withCrossFade()) // Smooth transition
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            Log.e("Glide", "Failed to load image: ${e?.message}")
-                            return false
-                        }
-
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            return false
-                        }
-                    })
+                    .load(imageUrl)
+                    .placeholder(R.drawable.product_image)
+                    .error(R.drawable.error_image)
                     .into(ivProductImage)
             } ?: run {
-                // If image_path is null, set a placeholder image
                 ivProductImage.setImageResource(R.drawable.product_image)
             }
         }
