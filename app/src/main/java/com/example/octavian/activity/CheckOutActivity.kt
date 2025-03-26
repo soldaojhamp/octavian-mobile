@@ -58,6 +58,7 @@ class CheckOutActivity : AppCompatActivity() {
         initViews()
         setupRecyclerView()
         displayUserInfo() // Corrected method call
+        fetchUserInfo() // Fetch user info from the database
     }
 
     private fun initViews() {
@@ -192,8 +193,44 @@ class CheckOutActivity : AppCompatActivity() {
     }
 
     private fun displayUserInfo() {
-        findViewById<TextView>(R.id.textView36).text = sharedPreferences.getString("user_name", "Username")
-        findViewById<TextView>(R.id.textView37).text = sharedPreferences.getString("contact_number", "Not provided")
-        findViewById<TextView>(R.id.textView38).text = sharedPreferences.getString("city", "Address not provided")
+        val usernameTextView = findViewById<TextView>(R.id.tvUsername)
+        val numberTextView = findViewById<TextView>(R.id.tvNumber)
+        val cityTextView = findViewById<TextView>(R.id.tvAddress)
+
+        Log.d("CheckOutActivity", "Username TextView: $usernameTextView")
+        Log.d("CheckOutActivity", "Number TextView: $numberTextView")
+        Log.d("CheckOutActivity", "City TextView: $cityTextView")
+
+        usernameTextView.text = sharedPreferences.getString("user_name", "Username")
+        numberTextView.text = sharedPreferences.getString("contact_number", "Not provided")
+        cityTextView.text = sharedPreferences.getString("city", "Address not provided")
     }
+
+    private fun fetchUserInfo() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitClient.instance.getUserInfo(userId) // Create this API call in RetrofitClient
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val userResponse = response.body()!!
+                        if (userResponse.success) {
+                            val user = userResponse.user
+                            findViewById<TextView>(R.id.tvUsername).text = user.user_name
+                            findViewById<TextView>(R.id.tvNumber).text = user.contact_number
+                            findViewById<TextView>(R.id.tvAddress).text = user.city
+                        } else {
+                            Toast.makeText(this@CheckOutActivity, userResponse.error, Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(this@CheckOutActivity, "Failed to fetch user info", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@CheckOutActivity, "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
 }

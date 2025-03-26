@@ -3,6 +3,7 @@ package com.example.octavian.Api
 import com.example.octavian.model.UserProfileResponse
 import com.example.octavian.dataClass.CartItem
 import com.example.octavian.dataClass.Product
+import com.example.octavian.dataClass.UserResponse
 import com.example.octavian.model.LogoutResponse
 import com.example.octavian.model.UpdateProfileRequest
 import com.example.octavian.model.UpdateProfileResponse
@@ -48,6 +49,9 @@ interface ApiService {
     @POST("checkout.php")
     @Headers("Content-Type: application/json")
     suspend fun placeOrder(@Body orderData: RequestBody): Response<ResponseBody>
+
+    @GET("checkout.php") // Replace with the actual path
+    suspend fun getUserInfo(@Query("user_id") userId: Int): Response<UserResponse>
 
 
     @Headers("Content-Type: application/json")

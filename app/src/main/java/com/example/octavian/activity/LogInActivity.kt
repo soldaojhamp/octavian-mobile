@@ -1,4 +1,3 @@
-// LogInActivity.kt
 package com.example.octavian.activity
 
 import android.content.Intent
@@ -22,8 +21,6 @@ class LogInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
-
-
 
         // Initialize views
         emailEditText = findViewById(R.id.loginUsernameTxt)
@@ -63,9 +60,14 @@ class LogInActivity : AppCompatActivity() {
             // Handle successful login
             Toast.makeText(this, loginResponse.message, Toast.LENGTH_SHORT).show()
 
-            // Retrieve and log the user_id from SharedPreferences
-            val userId = sharedPreferences.getInt("user_id", -1)
-            Log.d("LogInActivity", "Retrieved user_id after login: $userId")
+            // Store user data in SharedPreferences
+            val editor = sharedPreferences.edit()
+            editor.putInt("user_id", loginResponse.user_id) // Assuming user_id is part of the response
+            editor.putString("user_name", loginResponse.user_name) // Assuming user_name is part of the response
+            editor.apply()
+
+            // Log the user_id
+            Log.d("LogInActivity", "Retrieved user_id after login: ${loginResponse.user_id}")
 
             // Navigate to the next activity
             val intent = Intent(this, HomePageActivity::class.java)
@@ -76,6 +78,7 @@ class LogInActivity : AppCompatActivity() {
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
         })
     }
+
     // Function to validate email format
     private fun isValidEmail(email: String): Boolean {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"

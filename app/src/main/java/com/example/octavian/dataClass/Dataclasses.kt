@@ -3,6 +3,22 @@ package com.example.octavian.dataClass
 import android.os.Parcel
 import android.os.Parcelable
 
+
+// Create a data class for the user response
+data class UserResponse(
+    val success: Boolean,
+    val user: User,
+    val error: String? = null
+)
+
+data class User(
+    val user_id: Int,
+    val userId: Int?,
+    val user_name: String,
+    val contact_number: String,
+    val city: String
+)
+
 data class Product(
     val user_id: Int,
     val quantity: Int,

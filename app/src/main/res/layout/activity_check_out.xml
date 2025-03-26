@@ -68,7 +68,7 @@
             app:srcCompat="@drawable/locationicon" />
 
         <TextView
-            android:id="@+id/textView36"
+            android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -81,7 +81,7 @@
             tools:fontFamily="@font/poppins_medium" />
 
         <TextView
-            android:id="@+id/textView37"
+            android:id="@+id/tvNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -90,11 +90,11 @@
             android:text="0912345678"
             android:textColor="#80212121"
             android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/textView36"
+            app:layout_constraintStart_toEndOf="@+id/tvUsername"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView38"
+            android:id="@+id/tvAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="31dp"
@@ -105,9 +105,8 @@
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView36" />
+            app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView2"

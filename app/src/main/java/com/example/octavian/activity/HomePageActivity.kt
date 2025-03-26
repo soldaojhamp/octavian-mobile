@@ -22,10 +22,12 @@ import com.example.octavian.dataClass.CartItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomePageActivity : AppCompatActivity() {
 
     private lateinit var userNameTextView: TextView
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewProductsAdapter: RecyclerViewProductsAdapter
     private var productList = mutableListOf<Product>()
@@ -43,7 +45,6 @@ class HomePageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home_page)
 
         // Initialize views
-        userNameTextView = findViewById(R.id.textView12)
         Log.d("HomePageActivity", "Activity created")
 
         // Initialize category views
@@ -53,26 +54,26 @@ class HomePageActivity : AppCompatActivity() {
         pantsCategH = findViewById(R.id.linearLayoutPants)
         shoesCategH = findViewById(R.id.linearLayoutShoes)
 
+
+
         // Initialize SharedPreferences
-        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        userNameTextView = findViewById(R.id.tvUsername) // Ensure this ID matches your layout
 
-        //get user data
+        // Get user data
         userId = sharedPreferences.getInt("user_id", -1)
-        val userName = when {
-            sharedPreferences.contains("user_name") -> sharedPreferences.getString("user_name", "")
-            else -> "Guest"
-        }
+        val userName = sharedPreferences.getString("user_name", "Guest") ?: "Guest"
 
-        Log.d("HomePage", "User ID: $userId, Name: $userName")
+        Log.d("HomePage", "User  ID: $userId, Name: $userName")
 
         // Check if user is logged in
         if (userId == -1) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "User  not logged in", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
 
-        userNameTextView.text = userName
+        userNameTextView.text = userName // Set the username in the TextView
 
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.rvProductLists)
@@ -88,7 +89,10 @@ class HomePageActivity : AppCompatActivity() {
 
         // Set up bottom navigation click listeners
         setupBottomNavigation()
+
     }
+
+
 
     private fun setupCategoryClickListeners() {
         allCategH.setOnClickListener {
