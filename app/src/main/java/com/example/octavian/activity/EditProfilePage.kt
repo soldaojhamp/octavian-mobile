@@ -31,7 +31,7 @@ class EditProfilePage : AppCompatActivity() {
 
     private val apiService: ApiService by lazy {
         Retrofit.Builder()
-            .baseUrl("http://192.168.35.15/octavian_web/APP_DB/")
+            .baseUrl("http://192.168.154.104/octavian_web/APP_DB/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)

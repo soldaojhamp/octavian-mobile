@@ -1,99 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cart"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFF7F8"
     android:orientation="vertical"
     tools:context=".activity.CartPageActivity">
 
     <!-- Top Section -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="16dp">
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- Back Button -->
         <ImageView
             android:id="@+id/cartbackButton"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/back"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:contentDescription="Back"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="15dp"/>
+            android:src="@drawable/back"
+            android:tint="@color/red"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Order Text -->
         <TextView
             android:id="@+id/cartText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:fontFamily="@font/poppins"
+            android:fontFamily="@font/poppins_bold"
             android:text="My Cart"
             android:textColor="@color/black"
             android:textSize="30sp"
-            android:layout_marginTop="15dp"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cartbackButton"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Edit Text -->
-        <TextView
-            android:id="@+id/tvcartEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="200dp"
-            android:text="Edit"
-            android:layout_marginTop="10dp"/>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Cart Item Layout -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCartLists"
         android:layout_width="match_parent"
-        android:layout_height="640dp" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
     <!-- Bottom Section -->
     <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="170dp"
+        android:background="@drawable/logincurve"
         android:orientation="vertical"
-        android:background="@drawable/logincurve">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/tvcartItems"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Items"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
-            android:textColor="@color/white"
             android:fontFamily="@font/poppins"
+            android:text="Items"
+            android:textColor="@color/white"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvcarttotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Total"
-            android:textSize="26sp"
-            android:textColor="@color/white"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:text="Total"
+            android:textColor="@color/white"
+            android:textSize="26sp" />
 
         <Button
             android:id="@+id/checkoutButton"
             android:layout_width="370dp"
             android:layout_height="48dp"
             android:layout_marginStart="20dp"
-            android:text="Check Out"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/poppins"
             android:layout_marginTop="25dp"
-            android:background="@drawable/corners"/>
+            android:background="@drawable/corners"
+            android:fontFamily="@font/poppins"
+            android:text="Check Out"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

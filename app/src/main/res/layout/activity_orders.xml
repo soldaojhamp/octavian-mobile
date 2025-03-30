@@ -5,42 +5,45 @@
     android:id="@+id/orders"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFF7F8"
     android:orientation="vertical"
     tools:context=".activity.OrdersActivity">
 
     <!-- Top Section -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/white">
 
         <!-- Back Button -->
         <ImageView
             android:id="@+id/backButton"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center_vertical"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_margin="10dp"
             android:contentDescription="Back"
-            android:src="@drawable/back" />
+            android:src="@drawable/back"
+            android:tint="@color/red"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Order Text -->
         <TextView
             android:id="@+id/orderText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:fontFamily="@font/poppins"
+            android:fontFamily="@font/poppins_bold"
             android:text="Orders"
             android:textColor="#212121"
-            android:textSize="24sp"
-            tools:fontFamily="@font/poppins_semibold" />
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/backButton"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
@@ -50,10 +53,11 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
             android:background="@color/white"
-            android:padding="14dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="14dp">
 
             <TextView
                 android:id="@+id/textViewAll"
@@ -68,28 +72,28 @@
                 android:id="@+id/textViewPending"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
                 android:text="Pending"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                android:layout_marginEnd="24dp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/textViewShipped"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
                 android:text="Shipped"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                android:layout_marginEnd="24dp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/textViewCompleted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
                 android:text="Completed"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                android:layout_marginEnd="24dp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/textViewCancelled"
@@ -97,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:text="Cancelled"
                 android:textColor="@color/black"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
         </LinearLayout>
     </HorizontalScrollView>
 

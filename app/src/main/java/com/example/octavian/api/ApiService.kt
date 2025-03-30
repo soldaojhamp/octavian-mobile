@@ -1,7 +1,9 @@
 package com.example.octavian.Api
 
+import com.example.octavian.dataClass.CancelOrderRequest
 import com.example.octavian.model.UserProfileResponse
 import com.example.octavian.dataClass.CartItem
+import com.example.octavian.dataClass.CompleteOrderRequest
 import com.example.octavian.dataClass.Product
 import com.example.octavian.dataClass.UserResponse
 import com.example.octavian.model.LogoutResponse
@@ -22,11 +24,22 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
+
+    @PUT("complete_order.php")
+    suspend fun completeOrder(
+        @Body request: CompleteOrderRequest
+    ): Response<ResponseBody>
+
+    @PUT("cancel_order.php")
+    suspend fun cancelOrder(
+        @Body request: CancelOrderRequest
+    ): Response<ResponseBody>
 
     @FormUrlEncoded
     @POST("deleteCartItems.php")

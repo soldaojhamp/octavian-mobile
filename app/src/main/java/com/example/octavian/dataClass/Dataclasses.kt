@@ -2,6 +2,7 @@ package com.example.octavian.dataClass
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 
 // Create a data class for the user response
@@ -122,10 +123,10 @@ data class CartItem(
         val id: Int = 0,
         val userId: Int? = null,
         val user_id: Int,
-        val order_id: Int,        // Unique identifier for the order
+        var order_id: Int,        // Unique identifier for the order
         val product_id: Int,      // Unique identifier for the product
         val quantity: Int,        // Quantity of the product ordered
-        val status: String,       // Status of the order (e.g., "Pending", "Completed")
+        var status: String,       // Status of the order (e.g., "Pending", "Completed")
         val item_title: String,    // Title of the product
         val pricePerItem: Double, // Price per item
         val color: String,        // Color of the product
@@ -181,3 +182,14 @@ data class CartItem(
         val image_path: String? = null
     )
 }
+
+data class CancelOrderRequest(
+    @SerializedName("user_id") val userId: Int,
+    @SerializedName("order_id") val orderId: Int
+)
+
+data class CompleteOrderRequest(
+    @SerializedName("user_id") val userId: Int,
+    @SerializedName("order_id") val orderId: Int
+)
+

@@ -85,7 +85,7 @@ class RecyclerViewProductsAdapter(
     }
 
     private fun addToCart(holder: MyViewHolder, cartItem: CartItem, userId: Int) {
-        val url = "http://192.168.35.15/octavian_web/APP_DB/add_to_cart.php"
+        val url = "http://192.168.18.11/octavian_web/APP_DB/add_to_cart.php"
 
         // Create a JSON object with the cart item details
         val jsonBody = JSONObject().apply {

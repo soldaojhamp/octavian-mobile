@@ -83,7 +83,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView29"
+            android:id="@+id/cancel_button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:background="@drawable/cancelbg"
@@ -93,8 +93,13 @@
             android:textAlignment="center"
             android:textColor="#80212121"
             android:textSize="9sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:enabled="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
 
         <TextView
             android:id="@+id/textView30"

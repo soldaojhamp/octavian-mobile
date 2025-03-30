@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.octavian.Api.RetrofitClient
 import com.example.octavian.R
 import com.example.octavian.adapter.RecyclerViewOrdersListAdapter
+import com.example.octavian.dataClass.CancelOrderRequest
 import com.example.octavian.dataClass.CartItem
+import com.example.octavian.dataClass.CompleteOrderRequest
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,28 +43,21 @@ class OrdersActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_orders)
 
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.orders)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Initialize views
         initViews()
-
-        // Setup RecyclerView
-        recyclerView = findViewById(R.id.recyclerViewOrders)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = RecyclerViewOrdersListAdapter(mutableListOf())
-        recyclerView.adapter = adapter
-
-        // Get user ID
-        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-        userId = sharedPreferences.getInt("user_id", -1)
-
-        // Load initial data
+        setupRecyclerView()
+        loadUserId()
         fetchOrderItems()
     }
+
+
 
     private fun initViews() {
         findViewById<ImageView>(R.id.backButton).setOnClickListener { finish() }
@@ -73,34 +68,57 @@ class OrdersActivity : AppCompatActivity() {
         filterCompleted = findViewById(R.id.textViewCompleted)
         filterCancelled = findViewById(R.id.textViewCancelled)
 
-        // Set click listeners
         filterAll.setOnClickListener { filterOrders("All") }
         filterPending.setOnClickListener { filterOrders("Pending") }
         filterShipped.setOnClickListener { filterOrders("Shipped") }
         filterCompleted.setOnClickListener { filterOrders("Completed") }
-        filterCancelled.setOnClickListener { filterOrders("Cancelled") }    }
+        filterCancelled.setOnClickListener { filterOrders("Cancelled") }
+    }
+
+    private fun setupRecyclerView() {
+        recyclerView = findViewById(R.id.recyclerViewOrders)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = RecyclerViewOrdersListAdapter(mutableListOf()).apply {
+            setOrderActionListener(object : RecyclerViewOrdersListAdapter.OrderActionListener {
+                override fun onCancelOrder(orderId: Int) {
+                    Log.d("OrdersActivity", "Cancel order $orderId")
+                    cancelOrder(orderId)
+                }
+
+                override fun onCompleteOrder(orderId: Int) {
+                    Log.d("OrdersActivity", "Complete order $orderId")
+                    completeOrder(orderId)
+                }
+            })
+        }
+        recyclerView.adapter = adapter
+    }
+
+    private fun loadUserId() {
+        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        userId = sharedPreferences.getInt("user_id", -1).also {
+            if (it == -1) Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private fun fetchOrderItems() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitClient.instance.getOrderItems(userId)
-
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         response.body()?.let { items ->
                             allOrders.clear()
                             allOrders.addAll(items)
-                            filterOrders("All") // Show all by default
-                        } ?: run {
-                            Toast.makeText(this@OrdersActivity, "No orders found", Toast.LENGTH_SHORT).show()
-                        }
+                            filterOrders("All")
+                        } ?: showToast("No orders found")
                     } else {
-                        Toast.makeText(this@OrdersActivity, "Failed to load orders: ${response.message()}", Toast.LENGTH_SHORT).show()
+                        showToast("No orders found")
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@OrdersActivity, "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    showToast("Error: ${e.localizedMessage}")
                 }
             }
         }
@@ -112,7 +130,7 @@ class OrdersActivity : AppCompatActivity() {
         if (System.currentTimeMillis() - lastClickTime < 500) return
         lastClickTime = System.currentTimeMillis()
 
-        updateFilterSelection(status) // This keeps the tab highlighted
+        updateFilterSelection(status)
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -126,29 +144,32 @@ class OrdersActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         response.body()?.let { items ->
                             adapter.updateList(items)
-                            // No toast shown for empty results
-                        } ?: adapter.updateList(emptyList())
+                            if (items.isEmpty()) showSnackbar("No $status orders found")
+                        } ?: run {
+                            adapter.updateList(emptyList())
+                            showSnackbar("No orders found")
+                        }
                     } else {
                         Log.e("API", "Error: ${response.errorBody()?.string()}")
-                        adapter.updateList(emptyList()) // Show empty state on error
+                        adapter.updateList(emptyList())
+                        showSnackbar("No orders found")
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Log.e("API", "Network error", e)
-                    adapter.updateList(emptyList()) // Show empty state on network error
+                    adapter.updateList(emptyList())
+                    showSnackbar("Network error")
                 }
             }
         }
     }
 
     private fun updateFilterSelection(status: String) {
-        // Reset all colors to black
         listOf(filterAll, filterPending, filterShipped, filterCompleted, filterCancelled).forEach {
             it.setTextColor(ContextCompat.getColor(this, R.color.black))
         }
 
-        // Highlight selected filter
         when (status) {
             "All" -> filterAll.setTextColor(ContextCompat.getColor(this, R.color.red))
             "Pending" -> filterPending.setTextColor(ContextCompat.getColor(this, R.color.red))
@@ -156,5 +177,82 @@ class OrdersActivity : AppCompatActivity() {
             "Completed" -> filterCompleted.setTextColor(ContextCompat.getColor(this, R.color.red))
             "Cancelled" -> filterCancelled.setTextColor(ContextCompat.getColor(this, R.color.red))
         }
+    }
+
+    internal fun cancelOrder(orderId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitClient.instance.cancelOrder(
+                    CancelOrderRequest(userId, orderId)
+                )
+
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        // Find and update the order locally
+                        allOrders.find { it.order_id == orderId }?.status = "cancelled"
+                        // Refresh the current view
+                        filterOrders(getCurrentFilter())
+                        showSnackbar("Order cancelled successfully")
+                    } else {
+                        val error = response.errorBody()?.string() ?: "Unknown error"
+                        Log.e("API", "Cancel failed: $error")
+                        showSnackbar("Failed to cancel order: ${response.message()}")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Log.e("API", "Cancel error", e)
+                    showSnackbar("Error: ${e.localizedMessage}")
+                }
+            }
+        }
+    }
+
+    internal fun completeOrder(orderId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitClient.instance.completeOrder(
+                    CompleteOrderRequest(userId, orderId)
+                )
+
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        // Find and update the order locally
+                        allOrders.find { it.order_id == orderId }?.status = "completed"
+                        // Refresh the current view
+                        filterOrders(getCurrentFilter())
+                        showSnackbar("Order marked as completed")
+                    } else {
+                        val error = response.errorBody()?.string() ?: "Unknown error"
+                        Log.e("API", "Complete failed: $error")
+                        showSnackbar("Failed to complete order: ${response.message()}")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Log.e("API", "Complete error", e)
+                    showSnackbar("Error: ${e.localizedMessage}")
+                }
+            }
+        }
+    }
+
+    private fun getCurrentFilter(): String {
+        return when {
+            filterAll.currentTextColor == ContextCompat.getColor(this, R.color.red) -> "All"
+            filterPending.currentTextColor == ContextCompat.getColor(this, R.color.red) -> "Pending"
+            filterShipped.currentTextColor == ContextCompat.getColor(this, R.color.red) -> "Shipped"
+            filterCompleted.currentTextColor == ContextCompat.getColor(this, R.color.red) -> "Completed"
+            filterCancelled.currentTextColor == ContextCompat.getColor(this, R.color.red) -> "Cancelled"
+            else -> "All"
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show()
     }
 }
