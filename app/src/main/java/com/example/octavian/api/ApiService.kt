@@ -1,9 +1,11 @@
 package com.example.octavian.Api
 
+import com.example.octavian.dataClass.AddToCartResponse
 import com.example.octavian.dataClass.CancelOrderRequest
 import com.example.octavian.model.UserProfileResponse
 import com.example.octavian.dataClass.CartItem
 import com.example.octavian.dataClass.CompleteOrderRequest
+import com.example.octavian.dataClass.OrderCheckResponse
 import com.example.octavian.dataClass.Product
 import com.example.octavian.dataClass.UserResponse
 import com.example.octavian.model.LogoutResponse
@@ -26,10 +28,18 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
+
+    @POST("add_to_cart.php")
+    suspend fun addToCart(@Body cartItem: CartItem): Response<AddToCartResponse>
+
+    @GET("check_product_ordered.php")
+    suspend fun checkIfProductOrdered(
+        @Query("user_id") userId: Int,
+        @Query("product_id") productId: Int
+    ): Response<OrderCheckResponse>
 
     @PUT("complete_order.php")
     suspend fun completeOrder(
@@ -85,8 +95,6 @@ interface ApiService {
     @GET("get_cart_items.php")
     suspend fun getCartItems(@Query("user_id") userId: Int): Response<List<CartItem>>
 
-    @POST("add_to_cart.php")
-    suspend fun addToCart(@Body cartItem: CartItem): Response<ResponseBody>
 
     @POST("app_logout.php")
     suspend fun logout(): Response<LogoutResponse>

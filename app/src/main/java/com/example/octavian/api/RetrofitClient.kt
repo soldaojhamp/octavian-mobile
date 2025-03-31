@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "http://192.168.18.11/octavian_web/APP_DB/" // Replace with your actual base URL
+    private const val BASE_URL = "http://192.168.123.70/octavian_web/APP_DB/" // Replace with your actual base URL
 
     private val logging = HttpLoggingInterceptor().apply {
         setLevel(HttpLoggingInterceptor.Level.BODY)

@@ -1,6 +1,7 @@
 package com.example.octavian.activity
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
@@ -15,11 +16,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.octavian.Api.RetrofitClient
 import com.example.octavian.R
 import com.example.octavian.adapter.RecyclerViewCartAdapter
+import com.example.octavian.dataClass.AddToCartResponse
+import com.example.octavian.dataClass.ApiError
 import com.example.octavian.dataClass.CartItem
+import com.example.octavian.dataClass.OrderCheckResponse
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 
 class CartPageActivity : AppCompatActivity() {
 
@@ -140,16 +146,10 @@ class CartPageActivity : AppCompatActivity() {
     }
 
     private fun addToCart(cartItem: CartItem) {
-        // Check if the item is sold out
-        if (!cartItem.isAvailable) {
-            Toast.makeText(this, "Item is sold out.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Check if the item is already in the cart
-        if (cartList.any { it.product_id == cartItem.product_id }) {
-            Toast.makeText(this, "Item is already in your cart.", Toast.LENGTH_SHORT).show()
-            return
+        val progressDialog = ProgressDialog(this).apply {
+            setMessage("Verifying product...")
+            setCancelable(false)
+            show()
         }
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -157,31 +157,70 @@ class CartPageActivity : AppCompatActivity() {
                 val response = RetrofitClient.instance.addToCart(cartItem)
 
                 withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@CartPageActivity,
-                            "Item added to cart",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        fetchCartItems() // Refresh cart items after adding
-                    } else {
-                        Toast.makeText(
-                            this@CartPageActivity,
-                            "Failed to add item: ${response.message()}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    progressDialog.dismiss()
+                    handleAddToCartResponse(response)
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@CartPageActivity,
-                        "Network error: ${e.localizedMessage}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    progressDialog.dismiss()
+                    showToast("Network error: ${e.localizedMessage}")
                 }
             }
         }
+    }
+
+    private fun handleAddToCartResponse(response: Response<AddToCartResponse>) {
+        when {
+            response.isSuccessful -> {
+                response.body()?.let { apiResponse ->
+                    when {
+                        apiResponse.success -> {
+                            showToast(apiResponse.message ?: "Added to cart successfully")
+                            fetchCartItems()
+                        }
+                        apiResponse.code == "already_ordered" -> {
+                            showAlreadyOrderedDialog()
+                        }
+                        else -> {
+                            showToast(apiResponse.error ?: "Failed to add item")
+                        }
+                    }
+                } ?: showToast("Invalid server response")
+            }
+            else -> {
+                handleErrorResponse(response)
+            }
+        }
+    }
+
+    private fun handleErrorResponse(response: Response<AddToCartResponse>) {
+        try {
+            val errorBody = response.errorBody()?.string()
+            val error = Gson().fromJson(errorBody, ApiError::class.java)
+
+            when (response.code()) {
+                403 -> showAlreadyOrderedDialog()
+                409 -> showToast("Product already in your cart")
+                else -> showToast(error?.error ?: "Error code: ${response.code()}")
+            }
+        } catch (e: Exception) {
+            showToast("Failed to process error response")
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showAlreadyOrderedDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Already Ordered")
+            .setMessage("You've already purchased this product. Would you like to view your orders?")
+            .setPositiveButton("View Orders") { _, _ ->
+                startActivity(Intent(this, OrderCheckResponse::class.java))
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun redirectToLogin() {

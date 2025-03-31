@@ -185,11 +185,34 @@ data class CartItem(
 
 data class CancelOrderRequest(
     @SerializedName("user_id") val userId: Int,
-    @SerializedName("order_id") val orderId: Int
+    @SerializedName("order_id") val orderId: Int,
+    @SerializedName("product_id") val productId: Int
 )
 
 data class CompleteOrderRequest(
     @SerializedName("user_id") val userId: Int,
     @SerializedName("order_id") val orderId: Int
 )
+data class OrderCheckResponse(
+    val hasOrdered: Boolean,
+    val message: String?
+)
+
+// Add these to your data classes
+data class AddToCartResponse(
+    val success: Boolean,
+    val message: String? = null,
+    val error: String? = null,
+    val code: String? = null
+)
+
+data class ApiError(
+    val success: Boolean,
+    val message: String?,
+    val error: String?,
+    val code: String?
+)
+
+
+
 

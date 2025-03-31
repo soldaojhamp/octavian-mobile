@@ -109,16 +109,39 @@
             android:textColor="@color/white"
             android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/loginPasswordTxt"
+
+
+
+        <!-- Add this inside your LinearLayout that contains the password EditText -->
+        <!-- Right after your password EditText -->
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/input"
-            android:hint="********"
-            android:inputType="textPassword"
-            android:padding="10dp"
-            android:textSize="16sp" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/loginPasswordTxt"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/input"
+                android:hint="********"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/passwordToggle"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_custom_hide"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+
+
 
         <!-- Remember Me & Forgot Password -->
         <LinearLayout

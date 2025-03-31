@@ -3,29 +3,25 @@ package com.example.octavian.activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.octavian.R
+import com.example.octavian.databinding.ActivityLogInBinding
 
 class LogInActivity : AppCompatActivity() {
 
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var loginButton: Button
+    private lateinit var binding: ActivityLogInBinding
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var authManager: AuthManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_log_in)
-
-        // Initialize views
-        emailEditText = findViewById(R.id.loginUsernameTxt)
-        passwordEditText = findViewById(R.id.loginPasswordTxt)
-        loginButton = findViewById(R.id.LoginBtn)
+        binding = ActivityLogInBinding.inflate(layoutInflater)
+        setContentView(binding.root) // This should be the only setContentView
 
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
@@ -33,15 +29,70 @@ class LogInActivity : AppCompatActivity() {
         // Initialize AuthManager
         authManager = AuthManager(sharedPreferences)
 
+        // Set up password toggle functionality
+        setupPasswordToggle()
+
         // Set click listener for the login button
-        loginButton.setOnClickListener {
+        binding.LoginBtn.setOnClickListener {
             login()
+        }
+
+        // Set click listener for the sign up text
+        binding.textViewSignUp.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
+    private fun setupPasswordToggle() {
+        // Show/hide toggle based on focus and text
+        binding.loginPasswordTxt.setOnFocusChangeListener { _, hasFocus ->
+            binding.passwordToggle.visibility = if (hasFocus || binding.loginPasswordTxt.text.isNotEmpty()) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
+        }
+
+        // Handle text changes
+        binding.loginPasswordTxt.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                binding.passwordToggle.visibility = if (s.isNullOrEmpty() && !binding.loginPasswordTxt.hasFocus()) {
+                    View.INVISIBLE
+                } else {
+                    View.VISIBLE
+                }
+            }
+        })
+
+        // Toggle password visibility when clicked
+        binding.passwordToggle.setOnClickListener {
+            togglePasswordVisibility()
+        }
+    }
+
+    private fun togglePasswordVisibility() {
+        val selection = binding.loginPasswordTxt.selectionEnd
+
+        if (binding.loginPasswordTxt.transformationMethod == PasswordTransformationMethod.getInstance()) {
+            // Show password
+            binding.loginPasswordTxt.transformationMethod = HideReturnsTransformationMethod.getInstance()
+            binding.passwordToggle.setImageResource(R.drawable.ic_custom_hide)
+        } else {
+            // Hide password
+            binding.loginPasswordTxt.transformationMethod = PasswordTransformationMethod.getInstance()
+            binding.passwordToggle.setImageResource(R.drawable.ic_custom_show)
+        }
+
+        binding.loginPasswordTxt.setSelection(selection)
+    }
+
     private fun login() {
-        val email = emailEditText.text.toString()
-        val password = passwordEditText.text.toString()
+        val email = binding.loginUsernameTxt.text.toString()
+        val password = binding.loginPasswordTxt.text.toString()
 
         // Validate input
         if (email.isEmpty() || password.isEmpty()) {
@@ -61,27 +112,23 @@ class LogInActivity : AppCompatActivity() {
             Toast.makeText(this, loginResponse.message, Toast.LENGTH_SHORT).show()
 
             // Store user data in SharedPreferences
-            val editor = sharedPreferences.edit()
-            editor.putInt("user_id", loginResponse.user_id) // Assuming user_id is part of the response
-            editor.putString("user_name", loginResponse.user_name) // Assuming user_name is part of the response
-            editor.apply()
+            with(sharedPreferences.edit()) {
+                putInt("user_id", loginResponse.user_id)
+                putString("user_name", loginResponse.user_name)
+                apply()
+            }
 
-            // Log the user_id
-            Log.d("LogInActivity", "Retrieved user_id after login: ${loginResponse.user_id}")
+            Log.d("LogInActivity", "User ID after login: ${loginResponse.user_id}")
 
-            // Navigate to the next activity
-            val intent = Intent(this, HomePageActivity::class.java)
-            startActivity(intent)
-            finish() // Optional: finish the login activity
+            // Navigate to home activity
+            startActivity(Intent(this, HomePageActivity::class.java))
+            finish()
         }, { errorMessage ->
-            // Handle login error
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
         })
     }
 
-    // Function to validate email format
     private fun isValidEmail(email: String): Boolean {
-        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        return email.matches(emailPattern.toRegex())
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }

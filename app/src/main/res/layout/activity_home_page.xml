@@ -61,8 +61,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- Logo sa Kanan -->
     </LinearLayout>
 
     <LinearLayout
@@ -167,7 +165,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:src="@drawable/tshirtcateg"
-                android:tint="@color/white" />
+                app:tint="@color/white" />
 
             <!-- Text Below the Image -->
             <TextView
@@ -202,7 +200,7 @@
                 android:backgroundTint="@color/white"
                 android:scaleType="fitCenter"
                 android:src="@drawable/shortcateg"
-                android:tint="@color/white" />
+                app:tint="@color/white" />
 
             <!-- Text Below the Image -->
             <TextView
@@ -266,7 +264,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:src="@drawable/shoescateg"
-                android:tint="@color/white" />
+                app:tint="@color/white" />
 
             <!-- Text Below the Image -->
             <TextView
@@ -279,9 +277,7 @@
                 android:textSize="14sp" />
 
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -362,16 +358,34 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Products RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvProductLists"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp" />
 
-            <!-- Bagong LinearLayout sa ibaba -->
+            <!-- Empty Products View -->
+            <LinearLayout
+                android:id="@+id/layout_empty_products"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="No products Found"
+                    android:textSize="18sp"
+                    android:textColor="?android:attr/textColorSecondary" />
+            </LinearLayout>
 
         </LinearLayout>
-
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -512,12 +526,5 @@
                 android:textSize="14sp" />
 
         </LinearLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </LinearLayout>
-
-
-
-

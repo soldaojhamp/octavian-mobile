@@ -15,6 +15,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import android.view.View
+import android.widget.EditText
+import android.widget.ImageView
+import com.example.octavian.R
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -47,7 +53,10 @@ class SignUpActivity : AppCompatActivity() {
         binding.textViewlogin.setOnClickListener {
             val intent = Intent(this, LogInActivity::class.java)
             startActivity(intent)
+            finish()
         }
+
+        setupPasswordToggle()
     }
 
     private fun signUp() {
@@ -137,5 +146,49 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         return null // No error
+    }
+
+    private fun setupPasswordToggle() {
+        // Password field toggle
+        binding.passwordTxt.setOnFocusChangeListener { _, hasFocus ->
+            binding.passwordToggle.visibility = if (hasFocus || binding.passwordTxt.text.isNotEmpty()) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
+        }
+
+        binding.passwordToggle.setOnClickListener {
+            togglePasswordVisibility(binding.passwordTxt, binding.passwordToggle)
+        }
+
+        // Confirm password field toggle
+        binding.confirmPasswordTxt.setOnFocusChangeListener { _, hasFocus ->
+            binding.confirmPasswordToggle.visibility = if (hasFocus || binding.confirmPasswordTxt.text.isNotEmpty()) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
+        }
+
+        binding.confirmPasswordToggle.setOnClickListener {
+            togglePasswordVisibility(binding.confirmPasswordTxt, binding.confirmPasswordToggle)
+        }
+    }
+
+    private fun togglePasswordVisibility(editText: EditText, toggleIcon: ImageView) {
+        val selection = editText.selectionEnd // Save cursor position
+
+        if (editText.transformationMethod == PasswordTransformationMethod.getInstance()) {
+            // Show password
+            editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+            toggleIcon.setImageResource(R.drawable.ic_custom_show)
+        } else {
+            // Hide password
+            editText.transformationMethod = PasswordTransformationMethod.getInstance()
+            toggleIcon.setImageResource(R.drawable.ic_custom_hide)
+        }
+
+        editText.setSelection(selection) // Restore cursor position
     }
 }

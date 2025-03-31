@@ -166,6 +166,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView6" />
 
+        <ImageView
+            android:id="@+id/passwordToggle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_custom_hide"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/passwordTxt"
+            app:layout_constraintEnd_toEndOf="@id/passwordTxt"
+            app:layout_constraintTop_toTopOf="@id/passwordTxt" />
+
         <!-- Confirm Password -->
         <TextView
             android:id="@+id/textView8"
@@ -178,6 +189,17 @@
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/passwordTxt" />
+
+        <ImageView
+            android:id="@+id/confirmPasswordToggle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_custom_hide"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/confirmPasswordTxt"
+            app:layout_constraintEnd_toEndOf="@id/confirmPasswordTxt"
+            app:layout_constraintTop_toTopOf="@id/confirmPasswordTxt" />
 
         <EditText
             android:id="@+id/confirmPasswordTxt"

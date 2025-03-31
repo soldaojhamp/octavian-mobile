@@ -1,6 +1,5 @@
 package com.example.octavian.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -183,7 +182,10 @@ class OrdersActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitClient.instance.cancelOrder(
-                    CancelOrderRequest(userId, orderId)
+                    CancelOrderRequest(
+                        userId, orderId,
+                        productId = TODO()
+                    )
                 )
 
                 withContext(Dispatchers.Main) {

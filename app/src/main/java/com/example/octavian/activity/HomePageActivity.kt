@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -24,11 +25,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 class HomePageActivity : AppCompatActivity() {
 
     private lateinit var userNameTextView: TextView
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var recyclerView: RecyclerView
+    private lateinit var emptyProductsView: LinearLayout
     private lateinit var recyclerViewProductsAdapter: RecyclerViewProductsAdapter
     private var productList = mutableListOf<Product>()
     private var userId: Int = 1 // Default value, will be replaced
@@ -54,7 +57,8 @@ class HomePageActivity : AppCompatActivity() {
         pantsCategH = findViewById(R.id.linearLayoutPants)
         shoesCategH = findViewById(R.id.linearLayoutShoes)
 
-
+        // Initialize empty products view
+        emptyProductsView = findViewById(R.id.layout_empty_products)
 
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
@@ -89,10 +93,7 @@ class HomePageActivity : AppCompatActivity() {
 
         // Set up bottom navigation click listeners
         setupBottomNavigation()
-
     }
-
-
 
     private fun setupCategoryClickListeners() {
         allCategH.setOnClickListener {
@@ -135,14 +136,29 @@ class HomePageActivity : AppCompatActivity() {
                         productList.clear()
                         productList.addAll(products)
                         recyclerViewProductsAdapter.notifyDataSetChanged()
+
+                        // Show empty view if no products, otherwise show RecyclerView
+                        if (products.isEmpty()) {
+                            recyclerView.visibility = View.GONE
+                            emptyProductsView.visibility = View.VISIBLE
+                        } else {
+                            recyclerView.visibility = View.VISIBLE
+                            emptyProductsView.visibility = View.GONE
+                        }
                     } ?: run {
                         Toast.makeText(this@HomePageActivity, "No products found", Toast.LENGTH_SHORT).show()
+                        recyclerView.visibility = View.GONE
+                        emptyProductsView.visibility = View.VISIBLE
                     }
                 } else {
-                    Toast.makeText(this@HomePageActivity, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@HomePageActivity, "No products found", Toast.LENGTH_SHORT).show()
+                    recyclerView.visibility = View.GONE
+                    emptyProductsView.visibility = View.VISIBLE
                 }
             } catch (t: Throwable) {
-                Toast.makeText(this@HomePageActivity, "Error: ${t.localizedMessage}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@HomePageActivity, "No products found", Toast.LENGTH_SHORT).show()
+                recyclerView.visibility = View.GONE
+                emptyProductsView.visibility = View.VISIBLE
             }
         }
     }

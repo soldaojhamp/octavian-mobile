@@ -3,6 +3,7 @@ package com.example.octavian.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -21,6 +22,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import java.io.IOException
 
 class EditProfilePage : AppCompatActivity() {
 
@@ -31,7 +33,7 @@ class EditProfilePage : AppCompatActivity() {
 
     private val apiService: ApiService by lazy {
         Retrofit.Builder()
-            .baseUrl("http://192.168.154.104/octavian_web/APP_DB/")
+            .baseUrl("http://192.168.123.70/octavian_web/APP_DB/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
@@ -66,7 +68,7 @@ class EditProfilePage : AppCompatActivity() {
 
         // Set click listener for the profile image
         binding.ivProfileImageUrl.setOnClickListener {
-            openGallery()
+            openImageChooser()
         }
 
         // Save button click listener
@@ -96,8 +98,8 @@ class EditProfilePage : AppCompatActivity() {
         }
     }
 
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
+    private fun openImageChooser() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         intent.type = "image/*"
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
@@ -105,9 +107,17 @@ class EditProfilePage : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             selectedImageUri = data.data
-            binding.ivProfileImageUrl.setImageURI(selectedImageUri)
+            try {
+                // Display the selected image in the ImageView
+                selectedImageUri?.let { uri ->
+                    binding.ivProfileImageUrl.setImageURI(uri)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -173,7 +183,10 @@ class EditProfilePage : AppCompatActivity() {
                             Glide.with(this@EditProfilePage)
                                 .load(url)
                                 .placeholder(R.drawable.default_pfp)
+                                .error(R.drawable.default_pfp)
                                 .into(binding.ivProfileImageUrl)
+                        } ?: run {
+                            binding.ivProfileImageUrl.setImageResource(R.drawable.default_pfp)
                         }
 
                         Log.d("EditProfileActivity", "Profile loaded successfully")
@@ -241,10 +254,6 @@ class EditProfilePage : AppCompatActivity() {
                     apiService.updateUserProfile(request)
                 }
 
-                // Log the raw response
-                val rawResponse = response.raw().toString()
-                Log.d("EditProfileActivity", "Raw response: $rawResponse")
-
                 if (response.isSuccessful) {
                     val updateResponse = response.body()
                     if (updateResponse != null && updateResponse.success) {
@@ -290,8 +299,22 @@ class EditProfilePage : AppCompatActivity() {
     private suspend fun uploadImage(imageUri: Uri): String? {
         return withContext(Dispatchers.IO) {
             try {
+                // First show the selected image immediately in the UI thread
+                withContext(Dispatchers.Main) {
+                    try {
+                        binding.ivProfileImageUrl.setImageURI(imageUri)
+                    } catch (e: Exception) {
+                        Log.e("EditProfileActivity", "Error displaying selected image: ${e.message}")
+                        binding.ivProfileImageUrl.setImageResource(R.drawable.default_pfp)
+                    }
+                }
+
+                // Then proceed with the upload
                 val inputStream = contentResolver.openInputStream(imageUri)
-                val file = File(cacheDir, "temp_image.jpg")
+                val file = File(cacheDir, "temp_image_${System.currentTimeMillis()}.jpg").apply {
+                    parentFile?.mkdirs() // Ensure directory exists
+                }
+
                 inputStream?.use { input ->
                     file.outputStream().use { output ->
                         input.copyTo(output)
@@ -299,17 +322,37 @@ class EditProfilePage : AppCompatActivity() {
                 }
 
                 val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+                val body = MultipartBody.Part.createFormData(
+                    "file",
+                    "profile_${userId}_${System.currentTimeMillis()}.jpg",
+                    requestFile
+                )
 
                 val response = apiService.uploadImage(body)
                 if (response.isSuccessful && response.body()?.success == true) {
-                    response.body()?.url
+                    response.body()?.url?.also { url ->
+                        // Update the image URL in the UI after successful upload
+                        withContext(Dispatchers.Main) {
+                            Glide.with(this@EditProfilePage)
+                                .load(url)
+                                .placeholder(R.drawable.default_pfp)
+                                .error(R.drawable.default_pfp)
+                                .into(binding.ivProfileImageUrl)
+                        }
+                    }
                 } else {
                     Log.e("EditProfileActivity", "Image upload failed: ${response.errorBody()?.string()}")
                     null
                 }
             } catch (e: Exception) {
                 Log.e("EditProfileActivity", "Error uploading image: ${e.message}", e)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@EditProfilePage,
+                        "Failed to upload image: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
                 null
             }
         }
